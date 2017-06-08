@@ -1,14 +1,8 @@
 package com.andymur.pg.java.generics;
 
-import com.andymur.pg.java.generics.fruits.Apple;
-import com.andymur.pg.java.generics.fruits.AppleBox;
-import com.andymur.pg.java.generics.fruits.Fruit;
-import com.andymur.pg.java.generics.fruits.FruitBoxOperator;
-import com.andymur.pg.java.generics.fruits.Orange;
-import com.andymur.pg.java.generics.fruits.OrangeBox;
+import com.andymur.pg.java.generics.fruits.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.andymur.pg.java.generics.ClassWithStaticMethods.identity;
@@ -49,7 +43,7 @@ public class GenericsRunner {
         List<?> wildCardApples = new ArrayList<Apple>();
         List<?> wildCardOranges = new ArrayList<Orange>();
 
-        // wild card -> anythins is ok
+        // wild card -> anything is ok
 
         wildCardFruit = wildCardApples;
         wildCardFruit = extendFruitApples;
@@ -62,6 +56,11 @@ public class GenericsRunner {
         //extendFruits.add(new Orange()); impossible to add nothing but null
         extendFruitApples.add(null);
 
+        //covariant types
+        extendFruits = extendApples;
+
+        //contravariant
+        superOranges = superFruits;
     }
 
     private static void simpleFruitGenericRunner() {
