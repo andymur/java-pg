@@ -1,4 +1,8 @@
 package com.andymur.pg.java.yaml.model;
 
-public class Number {
+public enum Number {
+	SINGULAR,
+	DUAL,
+	TRIAL,
+	PLURAL
 }

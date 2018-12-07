@@ -1,4 +1,7 @@
 package com.andymur.pg.java.yaml.model;
 
-public class Mode {
+public enum Mode {
+	INDICATIVE,
+	CONJUCTIVE,
+	IMPERATIVE
 }
