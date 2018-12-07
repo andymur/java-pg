@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.PopupControl;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
