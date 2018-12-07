@@ -1,8 +1,8 @@
-package com.andymur.pg.java.yaml;
+package com.andymur.pg.java.yaml.model;
 
 import java.util.List;
 
-public class WordDescription {
+public class WordDescriptionDao {
 
 	private String word;
 	private String partOfSpeech;
@@ -11,35 +11,8 @@ public class WordDescription {
 	private String noun;
 	private List<String> examples;
 
-	public WordDescription() {
-	}
 
-	public WordDescription(final String word, final String partOfSpeech, final String gender, final String plural, final String noun, final List<String> examples) {
-		this.word = word;
-		this.partOfSpeech = partOfSpeech;
-		this.gender = gender;
-		this.plural = plural;
-		this.noun = noun;
-		this.examples = examples;
-	}
-
-	@Override
-	public String toString() {
-		return "WordDescription{" +
-				"word='" + word + '\'' +
-				", partOfSpeech='" + partOfSpeech + '\'' +
-				", gender='" + gender + '\'' +
-				", plural='" + plural + '\'' +
-				", examples=" + examples +
-				'}';
-	}
-
-	public String getNoun() {
-		return noun;
-	}
-
-	public void setNoun(final String noun) {
-		this.noun = noun;
+	public WordDescriptionDao() {
 	}
 
 	public String getWord() {
@@ -74,11 +47,30 @@ public class WordDescription {
 		this.plural = plural;
 	}
 
+	public String getNoun() {
+		return noun;
+	}
+
+	public void setNoun(final String noun) {
+		this.noun = noun;
+	}
+
 	public List<String> getExamples() {
 		return examples;
 	}
 
 	public void setExamples(final List<String> examples) {
 		this.examples = examples;
+	}
+
+	@Override
+	public String toString() {
+		return "WordDescriptionDao{" +
+				"word='" + word + '\'' +
+				", partOfSpeech='" + partOfSpeech + '\'' +
+				", gender='" + gender + '\'' +
+				", plural='" + plural + '\'' +
+				", examples=" + examples +
+				'}';
 	}
 }
