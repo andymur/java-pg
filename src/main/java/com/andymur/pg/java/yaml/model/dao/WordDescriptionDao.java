@@ -1,4 +1,4 @@
-package com.andymur.pg.java.yaml.model;
+package com.andymur.pg.java.yaml.model.dao;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ public class WordDescriptionDao {
 	private String gender;
 	private String plural;
 	private String noun;
+	private ParticiplesDao participles;
+	private ConjugationsDao conjugations;
 	private List<String> examples;
 
 
@@ -63,6 +65,22 @@ public class WordDescriptionDao {
 		this.examples = examples;
 	}
 
+	public ParticiplesDao getParticiples() {
+		return participles;
+	}
+
+	public void setParticiples(final ParticiplesDao participles) {
+		this.participles = participles;
+	}
+
+	public ConjugationsDao getConjugations() {
+		return conjugations;
+	}
+
+	public void setConjugations(final ConjugationsDao conjugations) {
+		this.conjugations = conjugations;
+	}
+
 	@Override
 	public String toString() {
 		return "WordDescriptionDao{" +
@@ -70,6 +88,9 @@ public class WordDescriptionDao {
 				", partOfSpeech='" + partOfSpeech + '\'' +
 				", gender='" + gender + '\'' +
 				", plural='" + plural + '\'' +
+				", noun='" + noun + '\'' +
+				", participles=" + participles +
+				", conjugations=" + conjugations +
 				", examples=" + examples +
 				'}';
 	}

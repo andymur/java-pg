@@ -1,11 +1,12 @@
 package com.andymur.pg.java.yaml.model.dao;
 
-public class ConjucationsDao {
+public class ConjugationsDao {
+
 	private MoodDao indicative;
 	private MoodDao conjunctive;
 	private MoodDao imperative;
 
-	public ConjucationsDao() {
+	public ConjugationsDao() {
 	}
 
 	public void setIndicative(final MoodDao indicative) {
@@ -22,7 +23,7 @@ public class ConjucationsDao {
 
 	@Override
 	public String toString() {
-		return "ConjucationsDao{" +
+		return "ConjugationsDao{" +
 				"indicative=" + indicative +
 				", conjunctive=" + conjunctive +
 				", imperative=" + imperative +
