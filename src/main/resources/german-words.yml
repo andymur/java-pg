@@ -1,0 +1,68 @@
+---
+# noun example
+word: überraschung
+partOfSpeech: noun
+gender: female
+plural: überraschungen
+examples:
+  - Die Wucht und Geschwindigkeit der Krise war allerdings auch für Muehlhan eine Überraschung.
+  - In der ersten Überraschung konnte sie nicht antworten
+---
+word: beruf
+partOfSpeech: noun
+gender: male
+plural: berufe
+examples:
+  - Er übt einen medizinischen Beruf aus.
+---
+# adjective example
+word: beruflich
+partOfSpeech: adjective
+noun: beruf
+examples:
+  - berufliche Tätigkeit
+---
+# verb example
+word: schaffen
+partOfSpeech: verb
+participles:
+  present: schaffend
+  perfect: geschaffen
+conjugations:
+  indicative:
+    present:
+        singular:
+          firstPerson: schaffe
+          secondPerson: schafst
+          thirdPerson: schafft
+        plural:
+          firstPerson: schaffen
+          secondPerson: schafft
+          thirdPerson: schaffen
+    past:
+        singular:
+          firstPerson: schuf
+          secondPerson: schufst
+          thirdPerson: schuft
+        plural:
+          firstPerson: schufen
+          secondPerson: schuft
+          thirdPerson: schufen
+  imperative:
+    present:
+        singular:
+          secondPerson: schaff
+        plural:
+          firstPerson: schaffen
+          secondPerson: schafft
+          thirdPerson: schaffen
+  conjunctive:
+    present:
+        singular:
+          firstPerson: schaffe
+          secondPerson: schaffest
+          thirdPerson: schaffe
+        plural:
+          firstPerson: schaffen
+          secondPerson: schaffet
+          thirdPerson: schaffen

@@ -1,0 +1,9 @@
+present:
+  singular:
+    firstPerson: schaffe
+    secondPerson: schafst
+    thirdPerson: schafft
+  plural:
+    firstPerson: schaffen
+    secondPerson: schafft
+    thirdPerson: schaffen

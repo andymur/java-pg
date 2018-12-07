@@ -1,4 +1,11 @@
 .rating-high {
-    -fx-fill: red;
-    -fx-text-fill: red;
+    -fx-background-color: green;
+}
+
+.rating-medium {
+    -fx-background-color: yellow;
+}
+
+.rating-low {
+    -fx-background-color: red;
 }
