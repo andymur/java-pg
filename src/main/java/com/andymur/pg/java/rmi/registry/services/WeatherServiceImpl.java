@@ -1,7 +1,5 @@
 package com.andymur.pg.java.rmi.registry.services;
 
-import org.apache.commons.lang.math.RandomUtils;
-
 import java.rmi.RemoteException;
 
 /**
@@ -13,7 +11,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public int currentTemperature(String city) throws RemoteException {
-        return RandomUtils.nextInt(10) + 10;
+        return /*RandomUtils.nextInt(10) + */10;
     }
 
     @Override
