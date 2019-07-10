@@ -1,4 +1,4 @@
-package com.andymur.pg.java.testrules;
+package testrules;
 
 import org.junit.internal.runners.statements.InvokeMethod;
 import org.junit.rules.TestRule;

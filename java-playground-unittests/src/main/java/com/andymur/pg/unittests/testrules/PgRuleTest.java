@@ -1,4 +1,4 @@
-package com.andymur.pg.java.testrules;
+package testrules;
 
 import org.junit.Ignore;
 import org.junit.Rule;

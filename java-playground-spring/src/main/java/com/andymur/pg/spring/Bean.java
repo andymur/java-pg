@@ -1,4 +1,4 @@
-package com.andymur.pg.java.spring;
+package com.andymur.pg.spring;
 
 public class Bean {
 	private String name;
