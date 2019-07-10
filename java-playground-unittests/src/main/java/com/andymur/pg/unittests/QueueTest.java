@@ -1,4 +1,4 @@
-package com.andymur.pg.java.unittests;
+package com.andymur.pg.unittests;
 
 import org.junit.Assert;
 import org.junit.Test;
