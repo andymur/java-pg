@@ -1,8 +1,5 @@
 package com.andymur.pg.java.genestack;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-
 /**
  * Created by andymur on 6/17/17.
  */
