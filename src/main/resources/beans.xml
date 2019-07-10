@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="bob" class="com.andymur.pg.java.spring.Bean">
+    <bean id="bob" class="com.andymur.pg.spring.Bean">
         <constructor-arg name="name" value="Bob">
         </constructor-arg>
     </bean>
@@ -17,7 +17,7 @@
                 <entry key="MT.Req2">
                     <bean class="java.util.ArrayList">
                         <constructor-arg>
-                            <list value-type="com.andymur.pg.java.spring.ExternalInterfaceType">
+                            <list value-type="com.andymur.pg.spring.ExternalInterfaceType">
                                 <ref bean="orderApiCsv"/>
                                 <ref bean="orderApiXml"/>
                             </list>
@@ -28,17 +28,17 @@
         </property>
     </bean>
 
-    <bean id="orderApiCsv" class="com.andymur.pg.java.spring.ExternalInterfaceType" factory-method="valueOf">
+    <bean id="orderApiCsv" class="com.andymur.pg.spring.ExternalInterfaceType" factory-method="valueOf">
         <constructor-arg value="ORDERAPI_CSV">
         </constructor-arg>
     </bean>
 
-    <bean id="orderApiXml" class="com.andymur.pg.java.spring.ExternalInterfaceType" factory-method="valueOf">
+    <bean id="orderApiXml" class="com.andymur.pg.spring.ExternalInterfaceType" factory-method="valueOf">
         <constructor-arg value="ORDERAPI_XML">
         </constructor-arg>
     </bean>
 
-    <bean id="orderApiFix" class="com.andymur.pg.java.spring.ExternalInterfaceType" factory-method="valueOf">
+    <bean id="orderApiFix" class="com.andymur.pg.spring.ExternalInterfaceType" factory-method="valueOf">
         <constructor-arg value="ORDERAPI_FIX">
         </constructor-arg>
     </bean>
