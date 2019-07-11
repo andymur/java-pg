@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
+import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http.HttpComponent;
 import org.apache.camel.component.jetty.JettyHttpComponent;
@@ -29,21 +30,28 @@ public class CamelRunner {
 			@Override
 			public void configure() throws Exception {
 				//from("direct:start").to("jetty:http://www.lib.ru/KIPLING/kim.txt");
-				from("direct:start")
+				/*from("direct:start")
 						.log(LoggingLevel.INFO,"hey just accessed something on the web")
 						.setHeader(Exchange.HTTP_METHOD, constant("GET"))
 						//.to("jetty:http://www.lib.ru/KIPLING/kim.txt")
 						.toD("http://www.lib.ru/KIPLING/kim.txt")
 						//.process(new LogProcessor())
 						.log(LoggingLevel.INFO,"hey just accessed something on the web")
-						.to("file:/tmp/kim.txt");
+						.to("file:/tmp/kim.txt");*/
+				from("direct:start").to("ahc:http://www.lib.ru/KIPLING/kim.txt")
+						.log(LoggingLevel.INFO, "${body}").to("file:/tmp/kim.txt");
+				//from("direct:start") .setHeader(Exchange.HTTP_METHOD, constant("GET")).to("ahc:http://www.google.com") .to("mock:results");
 			}
 		};
 
 		camelContext.addRoutes(routeBuilder);
 
 		camelContext.start();
-		Thread.sleep(TimeUnit.SECONDS.toMillis(5));
+
+		ProducerTemplate template = camelContext.createProducerTemplate();
+		template.sendBody("direct:start", "Message body");
+
+		Thread.sleep(TimeUnit.SECONDS.toMillis(10));
 		camelContext.stop();
 	}
 }
