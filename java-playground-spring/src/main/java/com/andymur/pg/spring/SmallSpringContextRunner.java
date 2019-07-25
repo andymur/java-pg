@@ -22,5 +22,9 @@ public class SmallSpringContextRunner {
 
 		ExternalInterfaceType externalInterfaceType = context.getBean("orderApiCsv", ExternalInterfaceType.class);
 		System.out.println(externalInterfaceType);
+
+		final BeanContainer beanContainer = context.getBean("beanContainer", BeanContainer.class);
+
+		beanContainer.sayHi();
 	}
 }

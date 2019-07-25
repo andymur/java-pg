@@ -3,6 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="alice" class="com.andymur.pg.spring.Bean">
+        <constructor-arg name="name" value="Alice">
+        </constructor-arg>
+    </bean>
+
     <bean id="bob" class="com.andymur.pg.spring.Bean">
         <constructor-arg name="name" value="Bob">
         </constructor-arg>
@@ -40,6 +45,15 @@
 
     <bean id="orderApiFix" class="com.andymur.pg.spring.ExternalInterfaceType" factory-method="valueOf">
         <constructor-arg value="ORDERAPI_FIX">
+        </constructor-arg>
+    </bean>
+
+    <bean id="beanContainer" class="com.andymur.pg.spring.BeanContainer">
+        <constructor-arg index="0">
+            <array value-type="com.andymur.pg.spring.Bean">
+                <ref bean="alice"/>
+                <ref bean="bob"/>
+            </array>
         </constructor-arg>
     </bean>
 
