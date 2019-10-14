@@ -13,6 +13,9 @@ import org.apache.camel.component.jetty9.JettyHttpComponent9;
 import org.apache.camel.impl.DefaultCamelContext;
 
 public class CamelRunner {
+
+	private static final String JETTY_URI = "jetty:https://aa.usno.navy.mil/cgi-bin/aa_rstablew.pl?ID=AA&year=2018&task=0&state=WA&place=Seattlei";
+
 	public static void main(String[] args) throws Exception {
 		CamelContext camelContext = new DefaultCamelContext();
 		camelContext.setTracing(false);
@@ -38,20 +41,23 @@ public class CamelRunner {
 						//.process(new LogProcessor())
 						.log(LoggingLevel.INFO,"hey just accessed something on the web")
 						.to("file:/tmp/kim.txt");*/
-				from("direct:start").to("ahc:http://www.lib.ru/KIPLING/kim.txt")
+				from("direct:start").to(JETTY_URI)
 						.log(LoggingLevel.INFO, "${body}").to("file:/tmp/kim.txt");
 				//from("direct:start") .setHeader(Exchange.HTTP_METHOD, constant("GET")).to("ahc:http://www.google.com") .to("mock:results");
 			}
 		};
 
-		camelContext.addRoutes(routeBuilder);
+		try {
+			camelContext.addRoutes(routeBuilder);
+			camelContext.start();
 
-		camelContext.start();
+			ProducerTemplate template = camelContext.createProducerTemplate();
+			template.sendBody("direct:start", "Message body");
 
-		ProducerTemplate template = camelContext.createProducerTemplate();
-		template.sendBody("direct:start", "Message body");
 
-		Thread.sleep(TimeUnit.SECONDS.toMillis(10));
-		camelContext.stop();
+		} finally {
+			Thread.sleep(TimeUnit.SECONDS.toMillis(10));
+			camelContext.stop();
+		}
 	}
 }
