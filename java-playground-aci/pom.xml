@@ -13,11 +13,12 @@
     <name>java-playground-aci</name>
     <url>http://andymur.com</url>
 
-    <!--dependencies>
+    <dependencies>
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
-    </dependencies-->
+    </dependencies>
 
 </project>
