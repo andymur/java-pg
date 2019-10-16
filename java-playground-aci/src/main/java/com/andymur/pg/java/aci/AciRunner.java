@@ -1,4 +1,4 @@
-package com.andymur.pg.java;
+package com.andymur.pg.java.aci;
 
 public class AciRunner {
 	public static void main(String[] args) {
