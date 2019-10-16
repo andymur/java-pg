@@ -20,8 +20,9 @@
     <modules>
         <module>java-playground-spring</module>
         <module>java-playground-unittests</module>
-	<module>java-playground-main</module>
-	<module>java-playground-camel</module>
+	    <module>java-playground-main</module>
+	    <module>java-playground-camel</module>
+        <module>java-playground-aci</module>
     </modules>
 
     <dependencyManagement>
