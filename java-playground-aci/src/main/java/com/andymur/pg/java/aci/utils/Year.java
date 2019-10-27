@@ -8,8 +8,13 @@ public final class Year {
     }
 
     public boolean isLeap() {
-        // I know this is not correct...yet!
-        return year % 4 == 0;
+        if (year % 400 == 0) {
+            return true;
+        } else if (year % 100 == 0) {
+            return false;
+        } else {
+            return year % 4 == 0;
+        }
     }
 
     public static Year of(final int year) {

@@ -6,12 +6,22 @@ import org.junit.Test;
 public class YearTest {
 
     @Test
-    public void testYearIsLeap() {
-        Assert.assertTrue(Year.of(2000).isLeap());
+    public void testFourHundredsYearIsLeap() {
+        Assert.assertTrue("2000 year is leap year", Year.of(2000).isLeap());
+    }
+
+    @Test
+    public void testHundredYearIsLeap() {
+        Assert.assertFalse("1900 year is non-leap year", Year.of(1900).isLeap());
     }
 
     @Test
     public void testYearIsNotLeap() {
-        Assert.assertFalse(Year.of(2019).isLeap());
+        Assert.assertFalse("2019 year is non-leap year", Year.of(2019).isLeap());
+    }
+
+    @Test
+    public void testYearIsLeap() {
+        Assert.assertTrue("2020 year is leap year", Year.of(2020).isLeap());
     }
 }
