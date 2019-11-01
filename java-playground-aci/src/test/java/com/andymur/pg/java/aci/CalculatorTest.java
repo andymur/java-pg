@@ -14,6 +14,7 @@ public class CalculatorTest {
     private static final int DEFAULT_SCALE = 2;
     private static final MathContext MATH_CONTEXT = new MathContext(DEFAULT_SCALE, RoundingMode.HALF_EVEN);
     private Calculator calculator;
+    private static LocalDate TEST_DATE = LocalDate.of(2019, 10, 23);
 
     @Before
     public void setUp() {
@@ -32,8 +33,8 @@ public class CalculatorTest {
     public void testCalculateEffectiveInterestRateWithTerm() {
         BigDecimal newRate = calculator.calculateEffectiveInterestRate(
                 PA_RATE,
-                LocalDate.of(2019, 10, 23),
-                LocalDate.of(2019, 10, 23),
+                TEST_DATE,
+                TEST_DATE,
                 TermPeriodType.ACTUAL,
                 BasePeriod._360
         );

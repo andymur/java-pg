@@ -41,7 +41,7 @@ public class Calculator {
      * @param basePeriod type of base per annum period
      * @return effective rate
      */
-    public BigDecimal calculateEffectiveInterestRate(double paRate, int daysNumber, BasePeriod basePeriod) {
+    public BigDecimal calculateEffectiveInterestRate(double paRate, long daysNumber, BasePeriod basePeriod) {
         return calculateEffectiveInterestRate(BigDecimal.valueOf(paRate), daysNumber, basePeriod);
     }
 
@@ -51,7 +51,7 @@ public class Calculator {
      * @param basePeriod type of base per annum period
      * @return effective rate
      */
-    public BigDecimal calculateEffectiveInterestRate(BigDecimal paRate, int daysNumber, BasePeriod basePeriod) {
+    public BigDecimal calculateEffectiveInterestRate(BigDecimal paRate, long daysNumber, BasePeriod basePeriod) {
         BigDecimal baseDays = BigDecimal.valueOf(getBaseDays(basePeriod, Year.of(2019)), SCALE);
         return paRate.multiply(
                 BigDecimal.valueOf(daysNumber, SCALE)
@@ -60,7 +60,7 @@ public class Calculator {
         );
     }
 
-    private int getTermDays(LocalDate periodStart,
+    private long getTermDays(LocalDate periodStart,
                             LocalDate periodEnd,
                             TermPeriodType termPeriodType) {
         return TERM_PERIOD_CALCULATOR.calculateTermPeriodInDays(periodStart, periodEnd, termPeriodType);
