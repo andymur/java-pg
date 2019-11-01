@@ -4,12 +4,14 @@ import java.time.LocalDate;
 
 import com.andymur.pg.java.aci.TermPeriodType;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TermPeriodCalculatorTest {
 
 	private static final TermPeriodCalculator CALCULATOR = TermPeriodCalculator.of();
 
+	// tests for actual
 	@Test
 	public void testActualTermCalculation(){
 
@@ -36,6 +38,7 @@ public class TermPeriodCalculatorTest {
 				31, termDaysNumber);
 	}
 
+	// tests for 30 method
 	@Test
 	public void test30TermCalculation() {
 		long termDaysNumber = CALCULATOR.calculateTermPeriodInDays(
@@ -60,6 +63,20 @@ public class TermPeriodCalculatorTest {
 				30, termDaysNumber);
 	}
 
+	@Test
+	public void test30TermCalculationForDifferentMonthWithinYear() {
+
+		long termDaysNumber = CALCULATOR.calculateTermPeriodInDays(
+				LocalDate.of(2019, 3, 1),
+				LocalDate.of(2019, 4, 5),
+				TermPeriodType._30
+		);
+
+		Assert.assertEquals("By 30 method number of days between 5th of April and 1st of March should be 34",
+				34, termDaysNumber);
+	}
+
+	// tests for 30E method
 	@Test
 	public void test30ETermCalculation31stShouldBeTreatedAs30th() {
 		long termDaysNumber = CALCULATOR.calculateTermPeriodInDays(

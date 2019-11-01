@@ -16,14 +16,15 @@ public class TermPeriodCalculator {
                                          LocalDate periodEnd,
                                          TermPeriodType termPeriodType) {
 
-		long differenceInDays = ChronoUnit.DAYS.between(periodStart, adjustPeriodEnd(periodEnd, termPeriodType));
 
     	switch (termPeriodType) {
 			case ACTUAL:
-				return differenceInDays;
+				return ChronoUnit.DAYS.between(periodStart, periodEnd);
 			case _30:
-			case _30E:
-				return differenceInDays == 31 ? 30 : differenceInDays;
+			case _30E: {
+				Period period = Period.between(periodStart, adjustPeriodEnd(periodEnd, termPeriodType));
+				return period.getYears() * 360 + period.getMonths() * 30 + period.getDays();
+			}
 		}
 
 		throw new IllegalArgumentException("Unsupported term period type: " + termPeriodType);
