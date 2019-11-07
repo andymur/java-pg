@@ -11,7 +11,7 @@ public enum BasePeriod {
 		this.numberOfDays = numberOfDays;
 	}
 
-	public int getNumberOfDays() {
+	public long getNumberOfDays() {
 		return numberOfDays;
 	}
 }

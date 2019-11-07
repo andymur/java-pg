@@ -39,7 +39,54 @@ public class CalculatorTest {
                 BasePeriod._360
         );
 
-        Assert.assertEquals(new BigDecimal("0.00", MATH_CONTEXT), newRate);
+        Assert.assertEquals(BigDecimal.ZERO, newRate);
     }
+
+    @Test
+    public void testRunner() {
+
+        /*BigDecimal newRate = calculator.calculateEffectiveInterestRate(
+                // 100,000,000 x 0.03 x 61/365 = 501,369.86
+                new BigDecimal(0.04, MATH_CONTEXT),
+                LocalDate.of(2019, 6, 1),
+                LocalDate.of(2019, 6, 30),
+                TermPeriodType.ACTUAL,
+                BasePeriod._360
+        );*/
+
+        BigDecimal newRate = calculator.calculateEffectiveInterestRate(
+                // 100,000,000 x 0.03 x 61/365 = 501,369.86
+                new BigDecimal(0.03, MATH_CONTEXT),
+                182,
+                //TermPeriodType.ACTUAL,
+                BasePeriod._360
+        );
+
+        System.out.println(newRate.toString());
+    }
+
+    //A 3-month (91-day) deposit of EUR 25 million is made at 3.25%.
+    //At maturity, it is rolled over (incl. Interest) three times at the given terms.
+    //At the end, how much is repaid (principal plus interest)?
+
+
+    //90 days	3.55%
+    //91 days	4.15%
+    //89 days	4.19%
+
+
+    //****//
+    @Test
+    public void testPresentValueCalculationForPeriodLessThanYear() {
+        //What is the present value of a claim for Euro 1 m you will receive in 182 days time
+        // if the Euro interest rate for this period is 3% ?
+        BigDecimal presentValue = calculator.calculatePresentValue(new BigDecimal("0.03"),
+                new BigDecimal("1000000"), 182, BasePeriod._360);
+
+        System.out.println(presentValue);
+    }
+
+    //****//
+    //A 90-day sterling bill is discounted at 6.125%. What is the true yield?
 
 }
