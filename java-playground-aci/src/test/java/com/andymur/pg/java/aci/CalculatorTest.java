@@ -2,7 +2,10 @@ package com.andymur.pg.java.aci;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -10,6 +13,9 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 
 public class CalculatorTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CalculatorTest.class);
+
     private static final int PA_RATE = 1;
     private static final int DEFAULT_SCALE = 2;
     private static final MathContext MATH_CONTEXT = new MathContext(DEFAULT_SCALE, RoundingMode.HALF_EVEN);
@@ -23,14 +29,16 @@ public class CalculatorTest {
 
     @Test
     public void testCalculateEffectiveInterestRate() {
-        //1*(70/360)
+        LOGGER.info("testCalculateEffectiveInterestRate.start;");
         BigDecimal newRate = calculator.calculateEffectiveInterestRate(PA_RATE, 70, BasePeriod._360);
 
-        Assert.assertEquals(new BigDecimal("0.194444444", MATH_CONTEXT), newRate);
+        Assert.assertEquals("Basic test for effective interest rate calculation.", new BigDecimal("0.19", MATH_CONTEXT), newRate);
+        LOGGER.info("testCalculateEffectiveInterestRate.end;");
     }
 
     @Test
     public void testCalculateEffectiveInterestRateWithTerm() {
+        LOGGER.info("testCalculateEffectiveInterestRateWithTerm.start;");
         BigDecimal newRate = calculator.calculateEffectiveInterestRate(
                 PA_RATE,
                 TEST_DATE,
@@ -39,20 +47,14 @@ public class CalculatorTest {
                 BasePeriod._360
         );
 
-        Assert.assertEquals(BigDecimal.ZERO, newRate);
+        Assert.assertEquals(new BigDecimal("0.0"), newRate);
+        LOGGER.info("testCalculateEffectiveInterestRateWithTerm.end;");
     }
 
     @Test
+    @Ignore
     public void testRunner() {
-
-        /*BigDecimal newRate = calculator.calculateEffectiveInterestRate(
-                // 100,000,000 x 0.03 x 61/365 = 501,369.86
-                new BigDecimal(0.04, MATH_CONTEXT),
-                LocalDate.of(2019, 6, 1),
-                LocalDate.of(2019, 6, 30),
-                TermPeriodType.ACTUAL,
-                BasePeriod._360
-        );*/
+        LOGGER.info("testRunner.start;");
 
         BigDecimal newRate = calculator.calculateEffectiveInterestRate(
                 // 100,000,000 x 0.03 x 61/365 = 501,369.86
@@ -62,7 +64,8 @@ public class CalculatorTest {
                 BasePeriod._360
         );
 
-        System.out.println(newRate.toString());
+        Assert.assertEquals(new BigDecimal("501369.86"), newRate);
+        LOGGER.info("testRunner.end;");
     }
 
     //A 3-month (91-day) deposit of EUR 25 million is made at 3.25%.
@@ -78,12 +81,23 @@ public class CalculatorTest {
     //****//
     @Test
     public void testPresentValueCalculationForPeriodLessThanYear() {
+        LOGGER.info("testPresentValueCalculationForPeriodLessThanYear.start;");
         //What is the present value of a claim for Euro 1 m you will receive in 182 days time
         // if the Euro interest rate for this period is 3% ?
         BigDecimal presentValue = calculator.calculatePresentValue(new BigDecimal("0.03"),
                 new BigDecimal("1000000"), 182, BasePeriod._360);
 
-        System.out.println(presentValue);
+        LOGGER.info("testPresentValueCalculationForPeriodLessThanYear.end;");
+    }
+
+    @Test
+    public void testPresentValueCalculationForPeriodMoreThanYearOrEqual() {
+        LOGGER.info("testPresentValueCalculationForPeriodMoreThanYearOrEqual.start;");
+        BigDecimal presentValue = calculator.calculatePresentValue(new BigDecimal("0.03"),
+                new BigDecimal("1000000"), 2);
+
+        Assert.assertEquals(new BigDecimal("942595.91"), presentValue);
+        LOGGER.info("testPresentValueCalculationForPeriodMoreThanYearOrEqual.end;");
     }
 
     //****//

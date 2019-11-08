@@ -2,6 +2,8 @@ package com.andymur.pg.java.aci;
 
 import com.andymur.pg.java.aci.utils.TermPeriodCalculator;
 import com.andymur.pg.java.aci.utils.Year;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -9,6 +11,8 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 
 public class Calculator {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Calculator.class);
 
     private static final int SCALE = 100;
     private static final MathContext MATH_CONTEXT = new MathContext(SCALE, RoundingMode.HALF_EVEN);
@@ -29,7 +33,7 @@ public class Calculator {
                                                      LocalDate periodEnd,
                                                      TermPeriodType termPeriodType,
                                                      BasePeriod basePeriod) {
-        return calculateEffectiveInterestRate(paRate.setScale(SCALE, RoundingMode.CEILING),
+        return calculateEffectiveInterestRate(paRate,
                 getTermDays(periodStart, periodEnd, termPeriodType), basePeriod);
     }
 
@@ -52,10 +56,24 @@ public class Calculator {
      * @return effective rate
      */
     public BigDecimal calculateEffectiveInterestRate(BigDecimal paRate, long daysNumber, BasePeriod basePeriod) {
-        BigDecimal baseDays = BigDecimal.valueOf(getBaseDays(basePeriod, Year.of(2019)), SCALE);
-        return paRate.multiply(
-                BigDecimal.valueOf(daysNumber, SCALE)
-                        .divide(baseDays, MATH_CONTEXT)).round(new MathContext(2, RoundingMode.HALF_EVEN));
+        LOGGER.info("calculateEffectiveInterestRate.start; paRate = {}, daysNumber = {}, basePeriod = {}",
+                paRate, daysNumber, basePeriod);
+
+        final BigDecimal baseDays = BigDecimal.valueOf(getBaseDays(basePeriod, Year.of(2019)));
+        final BigDecimal numberOfDays = BigDecimal.valueOf(daysNumber);
+        final BigDecimal daysDivision = numberOfDays.divide(baseDays, MATH_CONTEXT);
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("effectiveRate = paRate * daysNumber / baseDays");
+            LOGGER.debug("effectiveRate = {} * {} / {}", paRate, numberOfDays, baseDays);
+            LOGGER.debug("effectiveRate = {} * {}", paRate, daysDivision);
+        }
+
+        BigDecimal effectiveInterestRate = paRate.multiply(daysDivision)
+                .round(new MathContext(2, RoundingMode.HALF_EVEN));
+
+        LOGGER.info("calculateEffectiveInterestRate.end; effectiveInterestRate = {}", effectiveInterestRate);
+        return effectiveInterestRate;
     }
 
     private long getTermDays(LocalDate periodStart,
@@ -72,6 +90,7 @@ public class Calculator {
                                             BigDecimal futureValue,
                                             long daysNumber,
                                             BasePeriod basePeriod) {
+        //TODO: add debug logging
         if (daysNumber < 365) {
             // futureValue / (1 + rate * daysNumber/basePeriod)
             BigDecimal denominator = BigDecimal.ONE.add(
@@ -83,10 +102,20 @@ public class Calculator {
                     ), MATH_CONTEXT
             );
 
-            return futureValue.divide(denominator, 2, RoundingMode.HALF_EVEN);
+            return futureValue.divide(denominator, MATH_CONTEXT)
+                    .setScale(2, RoundingMode.HALF_EVEN);
         } else {
-            return BigDecimal.ONE;
+            throw new IllegalStateException("Not implemented yet!");
         }
+    }
+
+    public BigDecimal calculatePresentValue(BigDecimal paRate,
+                                           BigDecimal futureValue,
+                                           int yearsNumber) {
+        //TODO: add debug logging
+        return futureValue.divide(
+                    paRate.add(BigDecimal.ONE, MATH_CONTEXT)
+                .pow(yearsNumber), MATH_CONTEXT).setScale(2, RoundingMode.HALF_EVEN);
     }
 
     private long getBaseDays(final BasePeriod basePeriod,
