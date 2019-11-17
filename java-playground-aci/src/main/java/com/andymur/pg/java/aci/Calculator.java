@@ -9,12 +9,14 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Calculator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Calculator.class);
 
     private static final int SCALE = 100;
+    private static final int ROUNDING_SCALE = 2;
     private static final MathContext MATH_CONTEXT = new MathContext(SCALE, RoundingMode.HALF_EVEN);
     private static final TermPeriodCalculator TERM_PERIOD_CALCULATOR = TermPeriodCalculator.of();
 
@@ -70,7 +72,7 @@ public class Calculator {
         }
 
         BigDecimal effectiveInterestRate = paRate.multiply(daysDivision)
-                .round(new MathContext(2, RoundingMode.HALF_EVEN));
+                .setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
 
         LOGGER.info("calculateEffectiveInterestRate.end; effectiveInterestRate = {}", effectiveInterestRate);
         return effectiveInterestRate;
@@ -90,7 +92,9 @@ public class Calculator {
                                             BigDecimal futureValue,
                                             long daysNumber,
                                             BasePeriod basePeriod) {
-        //TODO: add debug logging
+        LOGGER.info("calculatePresentValue.start; paRate = {}, daysNumber = {}, basePeriod = {}",
+                paRate, daysNumber, basePeriod);
+        final BigDecimal presentValue;
         if (daysNumber < 365) {
             // futureValue / (1 + rate * daysNumber/basePeriod)
             BigDecimal denominator = BigDecimal.ONE.add(
@@ -102,8 +106,11 @@ public class Calculator {
                     ), MATH_CONTEXT
             );
 
-            return futureValue.divide(denominator, MATH_CONTEXT)
-                    .setScale(2, RoundingMode.HALF_EVEN);
+            presentValue = futureValue.divide(denominator, MATH_CONTEXT)
+                    .setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
+
+            LOGGER.info("calculatePresentValue.end; present value = {}", presentValue);
+            return presentValue;
         } else {
             throw new IllegalStateException("Not implemented yet!");
         }
@@ -115,7 +122,11 @@ public class Calculator {
         //TODO: add debug logging
         return futureValue.divide(
                     paRate.add(BigDecimal.ONE, MATH_CONTEXT)
-                .pow(yearsNumber), MATH_CONTEXT).setScale(2, RoundingMode.HALF_EVEN);
+                .pow(yearsNumber), MATH_CONTEXT).setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
+    }
+
+    public BigDecimal calculateAverageInterest(List<Deposit> deposits) {
+        return BigDecimal.ONE;
     }
 
     private long getBaseDays(final BasePeriod basePeriod,

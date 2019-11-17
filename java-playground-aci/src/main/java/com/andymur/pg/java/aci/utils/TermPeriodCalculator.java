@@ -5,13 +5,16 @@ import com.andymur.pg.java.aci.TermPeriodType;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 
 import static com.andymur.pg.java.aci.TermPeriodType._30E;
 
 public class TermPeriodCalculator {
 
-	//TODO: now it should work correctly only within one month
+	public long calculateTermPeriodInDays(LocalDate periodStart,
+										  LocalDate periodEnd) {
+		return calculateTermPeriodInDays(periodStart, periodEnd, TermPeriodType.ACTUAL);
+	}
+
     public long calculateTermPeriodInDays(LocalDate periodStart,
                                          LocalDate periodEnd,
                                          TermPeriodType termPeriodType) {
@@ -29,6 +32,11 @@ public class TermPeriodCalculator {
 
 		throw new IllegalArgumentException("Unsupported term period type: " + termPeriodType);
     }
+
+    public long calculateDaysSinceBeginningOfTheYear(LocalDate date) {
+		LocalDate yearBeginning = LocalDate.of(date.getYear(), 1, 1);
+		return ChronoUnit.DAYS.between(yearBeginning, date);
+	}
 
     private LocalDate adjustPeriodEnd(LocalDate periodEnd,
 									  TermPeriodType termPeriodType) {

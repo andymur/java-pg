@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Collections;
 
 public class CalculatorTest {
 
@@ -47,7 +48,7 @@ public class CalculatorTest {
                 BasePeriod._360
         );
 
-        Assert.assertEquals(new BigDecimal("0.0"), newRate);
+        Assert.assertEquals(new BigDecimal("0.00"), newRate);
         LOGGER.info("testCalculateEffectiveInterestRateWithTerm.end;");
     }
 
@@ -68,17 +69,51 @@ public class CalculatorTest {
         LOGGER.info("testRunner.end;");
     }
 
-    //A 3-month (91-day) deposit of EUR 25 million is made at 3.25%.
-    //At maturity, it is rolled over (incl. Interest) three times at the given terms.
-    //At the end, how much is repaid (principal plus interest)?
+    @Test
+    public void testAverageInterestCalculation() {
+        //TODO: Implement me
+        BigDecimal averageInterest = calculator.calculateAverageInterest(Collections.emptyList());
+        Assert.assertEquals(new BigDecimal("1"), averageInterest);
+        //A 3-month (91-day) deposit of EUR 25 million is made at 3.25%.
+        //At maturity, it is rolled over (incl. Interest) three times at the given terms.
+        //At the end, how much is repaid (principal plus interest)?
 
 
-    //90 days	3.55%
-    //91 days	4.15%
-    //89 days	4.19%
+        //90 days	3.55%
+        //91 days	4.15%
+        //89 days	4.19%
+    }
 
+    @Test
+    public void testCompoundEffectiveInterestCalculation() {
+        //TODO: Implement me
+    }
 
-    //****//
+    @Test
+    public void testForwardRatesCalculationForPeriodLessThanYear() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testForwardRatesCalculationForPeriodMoreThanYearOrEqual() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testFutureValueCalculationForPeriodLessThanYear() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testFutureValueCalculationForPeriodMoreThanYear() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testFutureValueCalculationForPeriodInYears() {
+        //TODO: Implement me
+    }
+
     @Test
     public void testPresentValueCalculationForPeriodLessThanYear() {
         LOGGER.info("testPresentValueCalculationForPeriodLessThanYear.start;");
@@ -91,13 +126,58 @@ public class CalculatorTest {
     }
 
     @Test
-    public void testPresentValueCalculationForPeriodMoreThanYearOrEqual() {
+    public void testPresentValueCalculationForPeriodMoreThanYear() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testPresentValueCalculationForPeriodInYears() {
         LOGGER.info("testPresentValueCalculationForPeriodMoreThanYearOrEqual.start;");
         BigDecimal presentValue = calculator.calculatePresentValue(new BigDecimal("0.03"),
                 new BigDecimal("1000000"), 2);
 
         Assert.assertEquals(new BigDecimal("942595.91"), presentValue);
         LOGGER.info("testPresentValueCalculationForPeriodMoreThanYearOrEqual.end;");
+    }
+
+    @Test
+    public void testInterestCalculationWithPresentAndFutureValueForPeriodLessThanYear() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testInterestCalculationWithPresentAndFutureValueForPeriodMoreThanYear() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testDiscountRatesIntoYieldConversion() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testYieldIntoDiscountRatesConversion() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testMoneyMarketToBondBasisConversion() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testBondToMoneyMarketBasisConversion() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testNonAnnualPaymentsIntoEffectiveInterestRateConversion() {
+        //TODO: Implement me
+    }
+
+    @Test
+    public void testAnnualIntoNonAnnualInterestPaymentsConversion() {
+        //TODO: Implement me
     }
 
     //****//

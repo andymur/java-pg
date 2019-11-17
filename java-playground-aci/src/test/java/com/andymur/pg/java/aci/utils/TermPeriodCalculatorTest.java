@@ -13,7 +13,7 @@ public class TermPeriodCalculatorTest {
 
 	// tests for actual
 	@Test
-	public void testActualTermCalculation(){
+	public void testActualTermCalculation() {
 
 		long termDaysNumber = CALCULATOR.calculateTermPeriodInDays(
 				LocalDate.of(2019, 3, 1),
@@ -26,7 +26,26 @@ public class TermPeriodCalculatorTest {
 	}
 
 	@Test
-	public void testActualTermCalculationForTheWholeMonth(){
+	public void testActualTermCalculationForHugePeriod() {
+		long termDaysNumber = CALCULATOR.calculateTermPeriodInDays(
+				LocalDate.of(1985, 10, 23),
+				LocalDate.of(2019, 10, 23),
+				TermPeriodType.ACTUAL
+		);
+		Assert.assertEquals("Actual number of days between 23rd of October 1985 and 23rd of October 2019 is 12418",
+				12418, termDaysNumber);
+	}
+
+	@Test
+	public void testDaysSinceYearBeginningCalculation() {
+		long daysNumber = CALCULATOR.calculateDaysSinceBeginningOfTheYear(LocalDate.of(2019, 1, 10));
+
+		Assert.assertEquals("Actual number of days betwee 10th of January and 1st of January should be 9",
+				9, daysNumber);
+	}
+
+	@Test
+	public void testActualTermCalculationForTheWholeMonth() {
 
 		long termDaysNumber = CALCULATOR.calculateTermPeriodInDays(
 				LocalDate.of(2019, 3, 1),
