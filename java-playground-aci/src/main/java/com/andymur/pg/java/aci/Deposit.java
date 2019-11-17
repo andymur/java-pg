@@ -34,6 +34,13 @@ public class Deposit {
         this.currency = currency;
     }
 
+    public long getNumberOfDays() {
+        return numberOfDays;
+    }
+
+    public BigDecimal getInterestRate() {
+        return interestRate;
+    }
 
     @Override
     public String toString() {

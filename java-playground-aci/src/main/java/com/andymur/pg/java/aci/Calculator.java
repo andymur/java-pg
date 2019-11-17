@@ -74,7 +74,7 @@ public class Calculator {
         BigDecimal effectiveInterestRate = paRate.multiply(daysDivision)
                 .setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
 
-        LOGGER.info("calculateEffectiveInterestRate.end; effectiveInterestRate = {}", effectiveInterestRate);
+        LOGGER.info("calculateEffectiveInterestRate.end; effective interest rate = {}", effectiveInterestRate);
         return effectiveInterestRate;
     }
 
@@ -119,14 +119,102 @@ public class Calculator {
     public BigDecimal calculatePresentValue(BigDecimal paRate,
                                            BigDecimal futureValue,
                                            int yearsNumber) {
-        //TODO: add debug logging
-        return futureValue.divide(
+        LOGGER.info("calculatePresentValue.start; paRate = {}, futureValue = {}, yearsNumber = {}",
+                paRate, futureValue, yearsNumber);
+        final BigDecimal presentValue = futureValue.divide(
                     paRate.add(BigDecimal.ONE, MATH_CONTEXT)
                 .pow(yearsNumber), MATH_CONTEXT).setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
+
+        LOGGER.info("calculatePresentValue.end; present value = {}", presentValue);
+        return presentValue;
     }
 
-    public BigDecimal calculateAverageInterest(List<Deposit> deposits) {
-        return BigDecimal.ONE;
+    public BigDecimal calculateAverageInterestRate(List<Deposit> deposits,
+                                                   BasePeriod basePeriod) {
+        // avgRate = [r1*d1/b+r2*d2/b+...]*b/(d1+d2+...)
+        LOGGER.info("calculateAverageInterestRate.start; deposits = {}, basePeriod = {}",
+                deposits, basePeriod);
+
+        final BigDecimal baseDays = BigDecimal.valueOf(getBaseDays(basePeriod, Year.of(2019)));
+
+        BigDecimal sumOfDaysInDepositPeriods = BigDecimal.ZERO;
+        BigDecimal sumOfInterests = BigDecimal.ZERO;
+
+        for (final Deposit deposit: deposits) {
+            BigDecimal numberOfDaysForDeposit = BigDecimal.valueOf(deposit.getNumberOfDays());
+
+            final BigDecimal currentRate = deposit.getInterestRate().multiply(
+                    numberOfDaysForDeposit.divide(baseDays, MATH_CONTEXT),
+                    MATH_CONTEXT
+            );
+
+            sumOfInterests = sumOfInterests.add(
+                    currentRate
+            );
+
+            sumOfDaysInDepositPeriods = sumOfDaysInDepositPeriods.add(numberOfDaysForDeposit);
+        }
+
+        final BigDecimal averageInterestRate = sumOfInterests.multiply(
+                baseDays.divide(sumOfDaysInDepositPeriods, MATH_CONTEXT))/*.setScale(ROUNDING_SCALE,
+                RoundingMode.HALF_EVEN)*/;
+
+        LOGGER.info("calculateAverageInterestRate.end; average interest rate = {}", averageInterestRate);
+        return averageInterestRate;
+    }
+
+    public BigDecimal calculateCompoundInterestRate(List<Deposit> deposits,
+                                                    BasePeriod basePeriod) {
+        // compoundRate = ([(1+r1*d1/b)*(1+r2*d2/b)*...] - 1)*B/d1+d2+...
+        LOGGER.info("calculateCompoundInterestRate.start; deposits = {}, basePeriod = {}",
+                deposits, basePeriod);
+
+        final BigDecimal baseDays = BigDecimal.valueOf(getBaseDays(basePeriod, Year.of(2019)));
+
+        BigDecimal sumOfDaysInDepositPeriods = BigDecimal.ZERO;
+        BigDecimal multiplicationOfInterests = BigDecimal.ONE;
+
+        for (Deposit deposit: deposits) {
+            BigDecimal numberOfDaysForDeposit = BigDecimal.valueOf(deposit.getNumberOfDays());
+            multiplicationOfInterests = deposit.getInterestRate().multiply(
+                    numberOfDaysForDeposit.divide(baseDays, MATH_CONTEXT),
+                    MATH_CONTEXT
+            ).add(BigDecimal.ONE).multiply(multiplicationOfInterests, MATH_CONTEXT);
+            sumOfDaysInDepositPeriods = sumOfDaysInDepositPeriods.add(numberOfDaysForDeposit);
+        }
+
+        final BigDecimal compoundInterestRate = multiplicationOfInterests.subtract(BigDecimal.ONE)
+                .multiply(baseDays.divide(sumOfDaysInDepositPeriods, MATH_CONTEXT))
+                .setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
+
+        LOGGER.info("calculateCompoundInterestRate.end; compound interest rate = {}", compoundInterestRate);
+        return compoundInterestRate;
+    }
+
+    public BigDecimal calculateFutureValueWithCompoundInterestRate(BigDecimal presentValue,
+                                                                   List<Deposit> deposits,
+                                                                   BasePeriod basePeriod) {
+        // futureValue = presentValue * [(1+r1*d1/b)*(1+r2*d2/b)*...]
+        LOGGER.info(
+                "calculateFutureValueWithCompoundInterestRate.start; presentValue = {}, deposits = {}, basePeriod = {}",
+                presentValue, deposits, basePeriod);
+
+        final BigDecimal baseDays = BigDecimal.valueOf(getBaseDays(basePeriod, Year.of(2019)));
+        BigDecimal multiplicationOfInterests = BigDecimal.ONE;
+
+        for (Deposit deposit: deposits) {
+            BigDecimal numberOfDaysForDeposit = BigDecimal.valueOf(deposit.getNumberOfDays());
+            multiplicationOfInterests = deposit.getInterestRate().multiply(
+                    numberOfDaysForDeposit.divide(baseDays, MATH_CONTEXT),
+                    MATH_CONTEXT
+            ).add(BigDecimal.ONE).multiply(multiplicationOfInterests, MATH_CONTEXT);
+        }
+
+        final BigDecimal futureValue = multiplicationOfInterests
+                .multiply(presentValue, MATH_CONTEXT).setScale(ROUNDING_SCALE, RoundingMode.HALF_EVEN);
+
+        LOGGER.info("calculateFutureValueWithCompoundInterestRate.end; future value = {}", futureValue);
+        return futureValue;
     }
 
     private long getBaseDays(final BasePeriod basePeriod,

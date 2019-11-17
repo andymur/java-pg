@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Arrays;
 
 public class CalculatorTest {
 
@@ -70,10 +70,24 @@ public class CalculatorTest {
     }
 
     @Test
+    @Ignore("Just for now")
     public void testAverageInterestCalculation() {
-        //TODO: Implement me
-        BigDecimal averageInterest = calculator.calculateAverageInterest(Collections.emptyList());
+        BigDecimal averageInterest = calculator.calculateAverageInterestRate(
+                Arrays.asList(
+                        new Deposit(91, new BigDecimal("0.0325")),
+                        new Deposit(90, new BigDecimal("0.0355")),
+                        new Deposit(91, new BigDecimal("0.0415")),
+                        new Deposit(89, new BigDecimal("0.0419"))
+                ),
+                BasePeriod._360
+        );
+
         Assert.assertEquals(new BigDecimal("1"), averageInterest);
+    }
+
+    @Test
+    @Ignore("Just for now")
+    public void testCompoundEffectiveInterestCalculation() {
         //A 3-month (91-day) deposit of EUR 25 million is made at 3.25%.
         //At maturity, it is rolled over (incl. Interest) three times at the given terms.
         //At the end, how much is repaid (principal plus interest)?
@@ -82,11 +96,43 @@ public class CalculatorTest {
         //90 days	3.55%
         //91 days	4.15%
         //89 days	4.19%
+
+        BigDecimal compoundInterestRate = calculator.calculateCompoundInterestRate(
+                Arrays.asList(
+                        new Deposit(91, new BigDecimal("0.0325")),
+                        new Deposit(90, new BigDecimal("0.0355")),
+                        new Deposit(91, new BigDecimal("0.0415")),
+                        new Deposit(89, new BigDecimal("0.0419"))
+                ),
+                BasePeriod._360
+        );
+
+        Assert.assertEquals(new BigDecimal("1"), compoundInterestRate);
     }
 
     @Test
-    public void testCompoundEffectiveInterestCalculation() {
-        //TODO: Implement me
+    public void testFutureValueCalculationWithCompoundInterestRates() {
+        //A 3-month (91-day) deposit of EUR 25 million is made at 3.25%.
+        //At maturity, it is rolled over (incl. Interest) three times at the given terms.
+        //At the end, how much is repaid (principal plus interest)?
+
+
+        //90 days	3.55%
+        //91 days	4.15%
+        //89 days	4.19%
+
+        BigDecimal futureValueWithCompoundInterest = calculator.calculateFutureValueWithCompoundInterestRate(
+                new BigDecimal("25000000"),
+                Arrays.asList(
+                        new Deposit(91, new BigDecimal("0.0325")),
+                        new Deposit(90, new BigDecimal("0.0355")),
+                        new Deposit(91, new BigDecimal("0.0415")),
+                        new Deposit(89, new BigDecimal("0.0419"))
+                ),
+                BasePeriod._360
+        );
+
+        Assert.assertEquals(new BigDecimal("25962011.01"), futureValueWithCompoundInterest);
     }
 
     @Test
