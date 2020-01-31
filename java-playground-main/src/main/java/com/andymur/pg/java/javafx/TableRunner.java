@@ -6,7 +6,11 @@ import java.util.List;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.WeakEventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
@@ -45,7 +49,9 @@ public class TableRunner extends Application {
 			column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFieldValue(headerValue)));
 
 			if ("Rating".equals(headerValue)) {
-				column.setCellFactory(ratingColumn -> new RatingCell());
+				final RatingCell ratingCell = new RatingCell();
+				ratingCell.setOnMouseClicked(new WeakEventHandler<>(event -> onCellClick(cityTable)));
+				column.setCellFactory(ratingColumn -> ratingCell);
 				/*column.setCellFactory(tc -> {
 					TableCell<City, String> cell = new TableCell<>();
 					Text text = new Text();
@@ -61,11 +67,24 @@ public class TableRunner extends Application {
 			columns.add(column);
 		}
 
+
 		cityTable.getColumns().addAll(columns);
 		cityTable.setItems(FXCollections.observableArrayList(new City("Paris", 2000000),
 				new City("Saint Petersburg", 5000000)));
 		vBox.getChildren().addAll(cityTable);
+		vBox.requestLayout();
+		cityTable.layoutBoundsProperty().addListener(new ChangeListener<Bounds>() {
+			@Override
+			public void changed(final ObservableValue<? extends Bounds> observable, final Bounds oldValue, final Bounds newValue) {
+				System.out.println("HAHAHAHA" + newValue.getWidth());
+			}
+		});
 		return vBox;
+	}
+
+	private Object onCellClick(final TableView<City> cityTable) {
+		System.out.println("" + cityTable.layoutBoundsProperty().get());
+		return "";
 	}
 
 	// our custom table column cell
