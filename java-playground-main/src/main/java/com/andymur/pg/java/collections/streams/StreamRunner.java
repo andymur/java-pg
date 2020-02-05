@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -26,9 +27,23 @@ public class StreamRunner {
 		assert citiesByCountry.get(germany).size() == 2;
 		assert citiesByCountry.get(russia).size() == 3;
 
-		final List<City> nTopCitiesByPopulation = getNTopCitiesByPopulation(2, cities);
-		final String mostPopulatedCity = nTopCitiesByPopulation.get(0).getName();
+		List<City> nTopCitiesByPopulation = getNTopCitiesByPopulation(2, cities);
+		String mostPopulatedCity = nTopCitiesByPopulation.get(0).getName();
 		assertIt("Moscow should be the most populated city but is " + mostPopulatedCity, mostPopulatedCity.equals("Moscow"));
+
+		nTopCitiesByPopulation = getNTopCitiesByPopulationStream(2, cities);
+		mostPopulatedCity = nTopCitiesByPopulation.get(0).getName();
+		assertIt("Moscow should be the most populated city but is " + mostPopulatedCity, mostPopulatedCity.equals("Moscow"));
+
+
+		/* reducing */
+
+		final Optional<City> city = cityWithBiggestPopulation(cities);
+		assertIt("Moscow should be the most populated city but is " + city.get(), city.get().getName().equals("Moscow"));
+
+		/* grouping */
+
+
 	}
 
 	public static List<City> buildCities() {
@@ -44,13 +59,26 @@ public class StreamRunner {
 		);
 	}
 
-
 	private static List<City> getNTopCitiesByPopulation(int n, Collection<City> cities) {
 		SortedSet<City> sortedCities = new TreeSet<>((o1, o2) -> o1.getPopulation() - o2.getPopulation() < 0 ? 1 : - 1);
 
 		sortedCities.addAll(cities);
 		return new ArrayList<>(sortedCities).subList(0, 2);
 	}
+
+	private static List<City> getNTopCitiesByPopulationStream(int n, Collection<City> cities) {
+		return cities.stream()
+				.sorted((o1, o2) -> o1.getPopulation() - o2.getPopulation() < 0 ? 1 : - 1)
+				.limit(n).collect(Collectors.toList());
+	}
+
+	private static Optional<City> cityWithBiggestPopulation(Collection<City> cities) {
+		return cities.stream().reduce((c1, c2) -> c1.getPopulation() > c2.getPopulation() ? c1 : c2);
+	}
+
+	/*private double populationSum(int n, Collection<City> cities) {
+		Arrays.stream(cities.toArray()).sorted()
+	}*/
 
 	private static void assertIt(final String message, final boolean condition) {
 		if (!condition) {
