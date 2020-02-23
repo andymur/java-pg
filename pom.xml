@@ -20,10 +20,11 @@
     <modules>
         <module>java-playground-spring</module>
         <module>java-playground-unittests</module>
-	    <module>java-playground-main</module>
-	    <module>java-playground-camel</module>
+	<module>java-playground-main</module>
+	<module>java-playground-camel</module>
         <module>java-playground-aci</module>
         <module>java-playground-pocket</module>
+        <module>java-playground-hashcode</module>
     </modules>
 
     <dependencyManagement>
