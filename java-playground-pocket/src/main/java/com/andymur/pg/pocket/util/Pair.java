@@ -1,6 +1,6 @@
 package com.andymur.pg.pocket.util;
 
-public class Pair<U, V> {
+public class Pair<U, V> implements Tuple {
 
 	private final U first;
 	private final V second;
@@ -20,5 +20,10 @@ public class Pair<U, V> {
 
 	public V second() {
 		return second;
+	}
+
+	@Override
+	public int arity() {
+		return 2;
 	}
 }

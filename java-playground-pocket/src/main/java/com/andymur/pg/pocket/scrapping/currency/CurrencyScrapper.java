@@ -22,7 +22,7 @@ import org.glassfish.jersey.client.ClientProperties;
 
 public class CurrencyScrapper implements Scrapper {
 
-	private static final String PROXY_URI = "http://192.168.4.22:3128/";
+	private static final String PROXY_URI = null;//"http://192.168.4.22:3128/";
 
 	private final Client client;
 

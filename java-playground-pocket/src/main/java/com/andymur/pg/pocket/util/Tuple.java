@@ -1,4 +1,5 @@
 package com.andymur.pg.pocket.util;
 
-public class Tuple {
+public interface Tuple {
+    int arity();
 }
