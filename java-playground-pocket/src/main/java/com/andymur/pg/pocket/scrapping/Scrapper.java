@@ -6,7 +6,7 @@ import com.andymur.pg.pocket.util.Pair;
 import java.time.LocalDate;
 import java.util.Set;
 
-public interface Scraper {
+public interface Scrapper {
     Pair<LocalDate, Set<Measurement>> gather();
     Pair<LocalDate, Set<Measurement>> gather(LocalDate measurementDate);
 }

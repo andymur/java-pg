@@ -35,7 +35,7 @@ class PocketTest {
 
 		Client client = ClientBuilder.newClient(config);
 		//askAndPrintCurrencyRates(client);
-		askAndPrintOpenExchangeCurrencyRates(client);
+		//askAndPrintOpenExchangeCurrencyRates(client);
 	}
 
 	private static void askAndPrintCurrencyRates(final Client client) {
