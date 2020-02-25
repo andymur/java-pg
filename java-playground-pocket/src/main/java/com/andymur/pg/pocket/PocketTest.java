@@ -41,7 +41,7 @@ class PocketTest {
 	private static void askAndPrintCurrencyRates(final Client client) {
 		final WebTarget target = client.target(CCY_EXCHANGE_API_URL);
 		final Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON_TYPE);
-		final RatesResponse ratesResponse = invocationBuilder.get(RatesResponse.class);
+		final ExchangeResponseRates ratesResponse = invocationBuilder.get(ExchangeResponseRates.class);
 		System.out.println(ratesResponse);
 	}
 
@@ -132,12 +132,12 @@ class PocketTest {
 		}
 	}
 
-	public static class RatesResponse {
+	public static class ExchangeResponseRates {
 		private Map<Currency, BigDecimal> rates;
 		private Currency base;
 		private Date date;
 
-		public RatesResponse() {
+		public ExchangeResponseRates() {
 		}
 
 		public Map<Currency, BigDecimal> getRates() {
