@@ -52,9 +52,9 @@ public class CurrencyScrapper implements Scrapper {
 
 			rates.add(new Rate.RateBuilder()
 					.date(measurementDate)
-					.baseSymbol(com.andymur.pg.pocket.model.Currency.valueOf(baseCurrency.name()))
-					.quoteSymbol(com.andymur.pg.pocket.model.Currency.valueOf(responseRates.getKey().name()))
-					.value(responseRates.getValue())
+					.baseSymbol(com.andymur.pg.pocket.model.label.base.Currency.valueOf(baseCurrency.name()))
+					.quoteSymbol(com.andymur.pg.pocket.model.label.base.Currency.valueOf(responseRates.getKey().name()))
+					.rate(responseRates.getValue())
 					.build());
 		}
 		return Pair.of(measurementDate, rates);

@@ -4,30 +4,30 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.andymur.pg.pocket.model.Label;
+import com.andymur.pg.pocket.model.label.Label;
 
 public class Rate {
 
 	private final LocalDate date;
 	private final Label baseSymbol;
 	private final Label quoteSymbol;
-	private final BigDecimal value;
+	private final BigDecimal rate;
 
 	private Rate(final LocalDate date,
 						final Label baseSymbol,
 						final Label quoteSymbol,
-						final BigDecimal value) {
+						final BigDecimal rate) {
 		this.date = date;
 		this.baseSymbol = baseSymbol;
 		this.quoteSymbol = quoteSymbol;
-		this.value = value;
+		this.rate = rate;
 	}
 
 	public static class RateBuilder {
 		private LocalDate date;
 		private Label baseSymbol;
 		private Label quoteSymbol;
-		private BigDecimal value;
+		private BigDecimal rate;
 
 		public RateBuilder date(final LocalDate date) {
 			this.date = date;
@@ -44,8 +44,8 @@ public class Rate {
 			return this;
 		}
 
-		public RateBuilder value(final BigDecimal value) {
-			this.value = value;
+		public RateBuilder rate(final BigDecimal rate) {
+			this.rate = rate;
 			return this;
 		}
 
@@ -53,9 +53,9 @@ public class Rate {
 			Objects.requireNonNull(date);
 			Objects.requireNonNull(baseSymbol);
 			Objects.requireNonNull(quoteSymbol);
-			Objects.requireNonNull(value);
+			Objects.requireNonNull(rate);
 
-			return new Rate(date, baseSymbol, quoteSymbol, value);
+			return new Rate(date, baseSymbol, quoteSymbol, rate);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class Rate {
 				"date=" + date +
 				", baseSymbol=" + baseSymbol +
 				", quoteSymbol=" + quoteSymbol +
-				", value=" + value +
+				", rate=" + rate +
 				'}';
 	}
 }

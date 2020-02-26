@@ -1,6 +1,4 @@
-package com.andymur.pg.pocket.model;
-
-import java.math.BigDecimal;
+package com.andymur.pg.pocket.model.asset.base;
 
 public interface FutureValuedAsset extends Asset {
     Asset futureAsset();

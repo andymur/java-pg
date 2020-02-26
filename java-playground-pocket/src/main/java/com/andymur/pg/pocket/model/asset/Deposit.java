@@ -1,4 +1,11 @@
-package com.andymur.pg.pocket.model;
+package com.andymur.pg.pocket.model.asset;
+
+import com.andymur.pg.pocket.model.asset.base.Asset;
+import com.andymur.pg.pocket.model.asset.base.AssetType;
+import com.andymur.pg.pocket.model.asset.base.AssetValue;
+import com.andymur.pg.pocket.model.asset.base.FutureValuedAsset;
+import com.andymur.pg.pocket.model.label.MeasureUnit;
+import com.andymur.pg.pocket.model.label.base.Currency;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -51,6 +58,11 @@ public class Deposit implements FutureValuedAsset {
     @Override
     public AssetValue getValue() {
         return new AssetValue(currency, amount);
+    }
+
+    @Override
+    public AssetType getType() {
+        return AssetType.DEPO;
     }
 
     private BigDecimal calculateFinalAmount() {

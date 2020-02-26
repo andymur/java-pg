@@ -1,4 +1,7 @@
-package com.andymur.pg.pocket.model;
+package com.andymur.pg.pocket.model.label.base;
+
+import com.andymur.pg.pocket.model.label.LabeledMeasurement;
+import com.andymur.pg.pocket.model.label.MeasureUnit;
 
 public enum Metal implements LabeledMeasurement {
 
