@@ -4,13 +4,13 @@ import com.andymur.pg.pocket.model.asset.base.Asset;
 import com.andymur.pg.pocket.model.asset.base.AssetType;
 import com.andymur.pg.pocket.model.asset.base.AssetValue;
 import com.andymur.pg.pocket.model.asset.base.FutureValuedAsset;
-import com.andymur.pg.pocket.model.label.MeasureUnit;
-import com.andymur.pg.pocket.model.label.base.Currency;
+import com.andymur.pg.pocket.model.label.base.MeasureUnit;
+import com.andymur.pg.pocket.model.label.Currency;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Deposit implements FutureValuedAsset {
+public class BankDeposit implements FutureValuedAsset {
 
     private static final String NA = "N/A";
 
@@ -20,18 +20,18 @@ public class Deposit implements FutureValuedAsset {
     private BigDecimal percentPerAnnum;
     private int days;
 
-    private Deposit() {
+    private BankDeposit() {
     }
 
-    public Deposit(final Currency currency,
-                   final BigDecimal amount) {
+    public BankDeposit(final Currency currency,
+                       final BigDecimal amount) {
         this(null, currency, amount, null);
     }
 
-    public Deposit(final String legalEntity,
-                   final Currency currency,
-                   final BigDecimal amount,
-                   final BigDecimal percentPerAnnum) {
+    public BankDeposit(final String legalEntity,
+                       final Currency currency,
+                       final BigDecimal amount,
+                       final BigDecimal percentPerAnnum) {
         Objects.requireNonNull(currency);
         Objects.requireNonNull(amount);
         this.legalEntity = legalEntity != null ? legalEntity : NA;
@@ -52,7 +52,7 @@ public class Deposit implements FutureValuedAsset {
 
     @Override
     public Asset futureAsset() {
-        return new Deposit(legalEntity, currency, calculateFinalAmount(), percentPerAnnum);
+        return new BankDeposit(legalEntity, currency, calculateFinalAmount(), percentPerAnnum);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Deposit implements FutureValuedAsset {
 
     @Override
     public AssetType getType() {
-        return AssetType.DEPO;
+        return AssetType.BANK_DEPOSIT;
     }
 
     private BigDecimal calculateFinalAmount() {

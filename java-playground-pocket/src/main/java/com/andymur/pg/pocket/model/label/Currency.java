@@ -1,7 +1,7 @@
-package com.andymur.pg.pocket.model.label.base;
+package com.andymur.pg.pocket.model.label;
 
-import com.andymur.pg.pocket.model.label.LabeledMeasurement;
-import com.andymur.pg.pocket.model.label.MeasureUnit;
+import com.andymur.pg.pocket.model.label.base.LabeledMeasurement;
+import com.andymur.pg.pocket.model.label.base.MeasureUnit;
 
 public enum  Currency implements LabeledMeasurement {
     AED(""), AFN(""), ALL(""), AMD(""), ANG(""), AOA(""), ARS(""), AUD(""), AWG(""), AZN(""),
@@ -25,7 +25,7 @@ public enum  Currency implements LabeledMeasurement {
 
     private final String symbol;
 
-    private Currency(final String symbol) {
+    Currency(final String symbol) {
         this.symbol = symbol;
     }
 

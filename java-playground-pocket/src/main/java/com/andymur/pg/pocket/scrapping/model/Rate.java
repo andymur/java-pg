@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.andymur.pg.pocket.model.label.Label;
+import com.andymur.pg.pocket.model.label.base.Label;
 
 public class Rate {
 

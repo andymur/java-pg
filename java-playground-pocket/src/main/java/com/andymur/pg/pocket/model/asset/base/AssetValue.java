@@ -1,6 +1,6 @@
 package com.andymur.pg.pocket.model.asset.base;
 
-import com.andymur.pg.pocket.model.label.LabeledMeasurement;
+import com.andymur.pg.pocket.model.label.base.LabeledMeasurement;
 
 import java.math.BigDecimal;
 
