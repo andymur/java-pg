@@ -1,12 +1,16 @@
 package com.andymur.pg.pocket.scrapping.model;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
 import com.andymur.pg.pocket.model.label.base.Label;
 
 public class Rate {
+
+	private final static MathContext MATH_CONTEXT = new MathContext(2, RoundingMode.HALF_EVEN);
 
 	private final LocalDate date;
 	private final Label baseSymbol;
@@ -21,6 +25,31 @@ public class Rate {
 		this.baseSymbol = baseSymbol;
 		this.quoteSymbol = quoteSymbol;
 		this.rate = rate;
+	}
+
+	public Rate reciprocal() {
+		return new RateBuilder()
+				.date(this.date)
+				.baseSymbol(this.quoteSymbol)
+				.quoteSymbol(this.baseSymbol)
+				.rate(BigDecimal.ONE.divide(this.rate, MATH_CONTEXT))
+				.build();
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public Label getBaseSymbol() {
+		return baseSymbol;
+	}
+
+	public Label getQuoteSymbol() {
+		return quoteSymbol;
+	}
+
+	public BigDecimal getRate() {
+		return rate;
 	}
 
 	public static class RateBuilder {
