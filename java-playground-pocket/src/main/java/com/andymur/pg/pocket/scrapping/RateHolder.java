@@ -4,6 +4,7 @@ import com.andymur.pg.pocket.model.label.base.Label;
 import com.andymur.pg.pocket.scrapping.model.Rate;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public interface RateHolder {
     /**
@@ -13,7 +14,7 @@ public interface RateHolder {
      * @param quoteSymbol
      * @return
      */
-    Rate fetchRate(LocalDate rateDate, Label baseSymbol, Label quoteSymbol);
+    Optional<Rate> fetchRate(LocalDate rateDate, Label baseSymbol, Label quoteSymbol);
 
     /**
      * Fetches rate for today
@@ -21,5 +22,5 @@ public interface RateHolder {
      * @param quoteSymbol
      * @return
      */
-    Rate fetchRate(Label baseSymbol, Label quoteSymbol);
+    Optional<Rate> fetchRate(Label baseSymbol, Label quoteSymbol);
 }
