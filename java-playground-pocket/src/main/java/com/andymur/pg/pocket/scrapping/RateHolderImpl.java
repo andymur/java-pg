@@ -19,6 +19,7 @@ public class RateHolderImpl implements RateHolder {
         this.scrapper = scrapper;
     }
 
+    //TODO: refactor me!
     @Override
     public Optional<Rate> fetchRate(final LocalDate rateDate,
                                     final Label baseSymbol,

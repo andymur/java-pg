@@ -29,7 +29,7 @@ public class RateHolderTest {
 
         rateHolder = new RateHolderImpl(scrapper);
 
-        Rate rate = rateHolder.fetchRate(Currency.EUR, Currency.RUB).orElse(null);
-        Assert.assertThat(rate.getRate(), CoreMatchers.is(new BigDecimal("78")));
+        Rate rate = rateHolder.fetchRate(Currency.EUR, Currency.RUB).orElseThrow(RuntimeException::new);
+        Assert.assertThat(rate.getRate(), CoreMatchers.is(new BigDecimal("78.0")));
     }
 }
