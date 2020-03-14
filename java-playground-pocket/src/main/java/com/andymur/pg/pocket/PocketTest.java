@@ -22,7 +22,7 @@ class PocketTest {
 	private static final String CCY_EXCHANGE_API_URL = "https://api.exchangeratesapi.io/2019-04-01";
 	private static final String OPEN_EXCHANGE_RATES_API_URL = "https://openexchangerates.org/api/latest.json?app_id=" + OPEN_EXCHANGE_RATES_API_KEY;
 
-	private static final String PROXY_URI = "http://192.168.4.22:3128/";
+	private static final String PROXY_URI = null;// "http://192.168.4.22:3128/";
 
 	public static void main(String[] args) {
 
@@ -35,7 +35,7 @@ class PocketTest {
 
 		Client client = ClientBuilder.newClient(config);
 		//askAndPrintCurrencyRates(client);
-		//askAndPrintOpenExchangeCurrencyRates(client);
+		askAndPrintOpenExchangeCurrencyRates(client);
 	}
 
 	private static void askAndPrintCurrencyRates(final Client client) {

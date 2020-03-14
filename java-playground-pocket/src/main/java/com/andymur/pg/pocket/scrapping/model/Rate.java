@@ -89,6 +89,29 @@ public class Rate {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Rate rate1 = (Rate) o;
+
+		if (!date.equals(rate1.date)) return false;
+		if (!baseSymbol.equals(rate1.baseSymbol)) return false;
+		if (!quoteSymbol.equals(rate1.quoteSymbol)) return false;
+		return rate.equals(rate1.rate);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = date.hashCode();
+		result = 31 * result + baseSymbol.hashCode();
+		result = 31 * result + quoteSymbol.hashCode();
+		result = 31 * result + rate.hashCode();
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return "Rate{" +
 				"date=" + date +

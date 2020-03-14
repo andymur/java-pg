@@ -6,6 +6,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,9 +21,12 @@ import com.andymur.pg.pocket.util.Pair;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CurrencyScrapper implements Scrapper {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CurrencyScrapper.class);
 	private static final String PROXY_URI = null;//"http://192.168.4.22:3128/";
 
 	private final Client client;
@@ -44,19 +49,21 @@ public class CurrencyScrapper implements Scrapper {
 
 	@Override
 	public Pair<LocalDate, Set<Rate>> gather(final LocalDate measurementDate) {
+		LOGGER.info(".gather.start; measurementDate={}", measurementDate);
 		final OpenExchangeRatesResponse ratesResponse = collectUnderlying();
 		final Currency baseCurrency = ratesResponse.getBase();
 		final Set<Rate> rates = new HashSet<>();
 
-		for (Map.Entry<Currency, BigDecimal> responseRates: ratesResponse.getRates().entrySet()) {
+		for (Map.Entry<Currency, BigDecimal> responseRate: ratesResponse.getRates().entrySet()) {
 
 			rates.add(new Rate.RateBuilder()
 					.date(measurementDate)
 					.baseSymbol(com.andymur.pg.pocket.model.label.Currency.valueOf(baseCurrency.name()))
-					.quoteSymbol(com.andymur.pg.pocket.model.label.Currency.valueOf(responseRates.getKey().name()))
-					.rate(responseRates.getValue())
+					.quoteSymbol(com.andymur.pg.pocket.model.label.Currency.valueOf(responseRate.getKey().name()))
+					.rate(responseRate.getValue())
 					.build());
 		}
+		LOGGER.info(".gather.finish; rates = {}", rates);
 		return Pair.of(measurementDate, rates);
 	}
 
