@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.andymur</groupId>
@@ -11,20 +11,21 @@
     <description>Java Playground</description>
 
     <properties>
-      <junit.version>4.11</junit.version>
-      <guava.version>18.0</guava.version>
-      <spring.version>4.3.18.RELEASE</spring.version>
-      <snakeyaml.version>1.21</snakeyaml.version>
+        <junit.version>4.11</junit.version>
+        <guava.version>18.0</guava.version>
+        <spring.version>4.3.18.RELEASE</spring.version>
+        <snakeyaml.version>1.21</snakeyaml.version>
     </properties>
 
     <modules>
         <module>java-playground-spring</module>
         <module>java-playground-unittests</module>
-	<module>java-playground-main</module>
-	<module>java-playground-camel</module>
+        <module>java-playground-main</module>
+        <module>java-playground-camel</module>
         <module>java-playground-aci</module>
         <module>java-playground-pocket</module>
         <module>java-playground-hashcode</module>
+        <module>java-playground-chess</module>
     </modules>
 
     <dependencyManagement>
@@ -35,9 +36,9 @@
                 <version>${junit.version}</version>
             </dependency>
             <dependency>
-              <groupId>com.google.guava</groupId>
-              <artifactId>guava</artifactId>
-              <version>${guava.version}</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
