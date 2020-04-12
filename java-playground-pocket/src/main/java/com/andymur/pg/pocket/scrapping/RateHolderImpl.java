@@ -5,6 +5,7 @@ import com.andymur.pg.pocket.model.label.base.Label;
 import com.andymur.pg.pocket.scrapping.model.Rate;
 import com.andymur.pg.pocket.util.Pair;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -24,6 +25,16 @@ public class RateHolderImpl implements RateHolder {
     public Optional<Rate> fetchRate(final LocalDate rateDate,
                                     final Label baseSymbol,
                                     final Label quoteSymbol) {
+
+        if (baseSymbol.equals(quoteSymbol)) {
+            return Optional.of(new Rate.RateBuilder()
+                    .date(rateDate)
+                    .baseSymbol(baseSymbol)
+                    .quoteSymbol(quoteSymbol)
+                    .rate(BigDecimal.ONE)
+                    .build());
+        }
+
         if (ratesByDate.get(rateDate) == null) {
             prepareDataForDate(rateDate);
         }
@@ -72,7 +83,7 @@ public class RateHolderImpl implements RateHolder {
     private void prepareData(final LocalDate date, final Set<Rate> rates) {
         Map<Label, List<Rate>> ratesForLabel = new HashMap<>();
 
-        for (final Rate rate: rates) {
+        for (final Rate rate : rates) {
             List<Rate> symbolRates = ratesForLabel.getOrDefault(rate.getBaseSymbol(), new ArrayList<>());
 
             if (symbolRates.isEmpty()) {

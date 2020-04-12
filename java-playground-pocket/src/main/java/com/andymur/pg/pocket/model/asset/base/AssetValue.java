@@ -12,4 +12,12 @@ public class AssetValue {
         this.measurement = measurement;
         this.value = value;
     }
+
+    public LabeledMeasurement getMeasurement() {
+        return measurement;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
 }

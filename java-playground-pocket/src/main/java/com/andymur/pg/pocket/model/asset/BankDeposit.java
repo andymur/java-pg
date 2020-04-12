@@ -4,8 +4,8 @@ import com.andymur.pg.pocket.model.asset.base.Asset;
 import com.andymur.pg.pocket.model.asset.base.AssetType;
 import com.andymur.pg.pocket.model.asset.base.AssetValue;
 import com.andymur.pg.pocket.model.asset.base.FutureValuedAsset;
-import com.andymur.pg.pocket.model.label.base.MeasureUnit;
 import com.andymur.pg.pocket.model.label.Currency;
+import com.andymur.pg.pocket.model.label.base.MeasureUnit;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -25,19 +25,21 @@ public class BankDeposit implements FutureValuedAsset {
 
     public BankDeposit(final Currency currency,
                        final BigDecimal amount) {
-        this(null, currency, amount, null);
+        this(NA, currency, amount, BigDecimal.ZERO);
     }
 
     public BankDeposit(final String legalEntity,
                        final Currency currency,
                        final BigDecimal amount,
                        final BigDecimal percentPerAnnum) {
+        Objects.requireNonNull(legalEntity);
         Objects.requireNonNull(currency);
         Objects.requireNonNull(amount);
-        this.legalEntity = legalEntity != null ? legalEntity : NA;
+        Objects.requireNonNull(percentPerAnnum);
+        this.legalEntity = legalEntity;
         this.currency = currency;
         this.amount = amount;
-        this.percentPerAnnum = percentPerAnnum != null ? percentPerAnnum : BigDecimal.ZERO;
+        this.percentPerAnnum = percentPerAnnum;
     }
 
     @Override
