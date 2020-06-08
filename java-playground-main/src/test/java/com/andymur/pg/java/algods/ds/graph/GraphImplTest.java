@@ -5,8 +5,12 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GraphImplTest {
 
@@ -17,10 +21,24 @@ public class GraphImplTest {
         weightedGraph.addEdge(GraphImpl.Edge.of("A", "C", 1));
         weightedGraph.addEdge(GraphImpl.Edge.of("B", "C", 1));
 
+        Assert.assertThat(
+                weightedGraph.getNodeValues().stream().sorted().collect(Collectors.toList()),
+                CoreMatchers.equalTo(
+                        Arrays.asList("A", "B", "C")
+                )
+        );
+
+        Assert.assertThat(
+                weightedGraph.breadthFirstSearch("A").stream().sorted().collect(Collectors.toList()),
+                CoreMatchers.equalTo(
+                        Arrays.asList("A", "B", "C")
+                )
+        );
+
         GraphImpl.AdjacentMatrix<Integer, String> adjacentMatrix = weightedGraph.adjacentMatrix(0, Integer.MAX_VALUE, (a, b) -> a == Integer.MAX_VALUE || b == Integer.MAX_VALUE ? Integer.MAX_VALUE : a + b);
         System.out.println(adjacentMatrix.prettyPrintedAdjacentMatrix());
         Assert.assertNotNull(adjacentMatrix);
-
+        //TODO replace actual with matcher
         Assert.assertThat(0, CoreMatchers.equalTo(adjacentMatrix.getValue(0, 0)));
         Assert.assertThat(1, CoreMatchers.equalTo(adjacentMatrix.getValue(0, 1)));
         Assert.assertThat(1, CoreMatchers.equalTo(adjacentMatrix.getValue(0, 2)));
@@ -32,6 +50,72 @@ public class GraphImplTest {
         Assert.assertThat(1, CoreMatchers.equalTo(adjacentMatrix.getValue(2, 0)));
         Assert.assertThat(1, CoreMatchers.equalTo(adjacentMatrix.getValue(2, 1)));
         Assert.assertThat(0, CoreMatchers.equalTo(adjacentMatrix.getValue(2, 2)));
+    }
+
+    @Test
+    public void testDepthFirstSearch() {
+        Graph<Integer, Integer> graph = new GraphImpl<>();
+
+        graph.addEdge(GraphImpl.Edge.of(1, 2, 1));
+        graph.addEdge(GraphImpl.Edge.of(1, 3, 1));
+        graph.addEdge(GraphImpl.Edge.of(3, 4, 1));
+        graph.addEdge(GraphImpl.Edge.of(3, 5, 1));
+        graph.addEdge(GraphImpl.Edge.of(4, 6, 1));
+        graph.addEdge(GraphImpl.Edge.of(5, 6, 1));
+        graph.addEdge(GraphImpl.Edge.of(6, 7, 1));
+        graph.addEdge(GraphImpl.Edge.of(8, 9, 1));
+        graph.addEdge(GraphImpl.Edge.of(8, 10, 1));
+        graph.addEdge(GraphImpl.Edge.of(9, 10, 1));
+
+        Set<Integer> dfsStartingFromFirst = graph.depthFirstSearch(1);
+        Assert.assertThat(
+                dfsStartingFromFirst.stream().sorted().collect(Collectors.toList()),
+                CoreMatchers.equalTo(
+                        Arrays.asList(1, 2, 3, 4, 5, 6, 7)
+                )
+        );
+
+        Set<Integer> dfsStartingFromNeun = graph.depthFirstSearch(9);
+
+        Assert.assertThat(
+                dfsStartingFromNeun.stream().sorted().collect(Collectors.toList()),
+                CoreMatchers.equalTo(
+                        Arrays.asList(8, 9, 10)
+                )
+        );
+    }
+
+    @Test
+    public void testBreadthFirstSearch() throws FileNotFoundException, URISyntaxException {
+        Graph<Integer, Integer> graph = new GraphImpl<>();
+
+        graph.addEdge(GraphImpl.Edge.of(1, 2, 1));
+        graph.addEdge(GraphImpl.Edge.of(1, 3, 1));
+        graph.addEdge(GraphImpl.Edge.of(3, 4, 1));
+        graph.addEdge(GraphImpl.Edge.of(3, 5, 1));
+        graph.addEdge(GraphImpl.Edge.of(4, 6, 1));
+        graph.addEdge(GraphImpl.Edge.of(5, 6, 1));
+        graph.addEdge(GraphImpl.Edge.of(6, 7, 1));
+        graph.addEdge(GraphImpl.Edge.of(8, 9, 1));
+        graph.addEdge(GraphImpl.Edge.of(8, 10, 1));
+        graph.addEdge(GraphImpl.Edge.of(9, 10, 1));
+
+        Set<Integer> bfsStartingFromFirst = graph.breadthFirstSearch(1);
+        Assert.assertThat(
+                bfsStartingFromFirst.stream().sorted().collect(Collectors.toList()),
+                CoreMatchers.equalTo(
+                        Arrays.asList(1, 2, 3, 4, 5, 6, 7)
+                )
+        );
+
+        Set<Integer> bfsStartingFromNeun = graph.breadthFirstSearch(9);
+
+        Assert.assertThat(
+                bfsStartingFromNeun.stream().sorted().collect(Collectors.toList()),
+                CoreMatchers.equalTo(
+                        Arrays.asList(8, 9, 10)
+                )
+        );
     }
 
     @Test

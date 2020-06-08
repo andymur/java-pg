@@ -9,7 +9,7 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
     private final static Graph<?, ?> EMPTY_GRAPH = new GraphImpl<>();
 
     private final Set<Node<V>> nodes = new HashSet<>();
-    private final List<Edge<E, V>> edges = new ArrayList<>();
+    private final Map<V, Set<Edge<E, V>>> edges = new HashMap<>();
     private final boolean isOriented;
 
     public GraphImpl() {
@@ -31,12 +31,28 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
     @Override
     public void addEdge(Edge<E, V> edge) {
 
-        if (!nodes.contains(edge.end) || !nodes.contains(edge.start)) {
-            throw new IllegalArgumentException("Edge cannot be added, it contains node(s) not part of this graph");
+        if (!nodes.contains(edge.start)) {
+            nodes.add(edge.start);
         }
 
-        if (!edges.contains(edge)) {
-            edges.add(edge);
+        if (!nodes.contains(edge.end)) {
+            nodes.add(edge.end);
+        }
+
+        if (!edges.containsKey(edge.start.getValue())) {
+            edges.put(edge.start.getValue(), new HashSet<>());
+        }
+
+        if (!edges.containsKey(edge.end.getValue())) {
+            edges.put(edge.end.getValue(), new HashSet<>());
+        }
+
+        Set<Edge<E, V>> outgoingEdges = edges.get(edge.start.getValue());
+        outgoingEdges.add(edge);
+
+        if (!isOriented) {
+            Set<Edge<E, V>> incomingEdges = this.edges.get(edge.end.getValue());
+            incomingEdges.add(edge.reversed());
         }
     }
 
@@ -47,8 +63,8 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
 
     @Override
     public Optional<Edge<E, V>> edgeWithNodes(Node<V> firstNode, Node<V> secondNode) {
-        Optional<Edge<E, V>> edgeStartedOnFirst = edges.stream().filter(edge -> edge.start.equals(firstNode) && edge.end.equals(secondNode)).findFirst();
-        Optional<Edge<E, V>> edgeStartedOnSecond = edges.stream().filter(edge -> edge.start.equals(secondNode) && edge.end.equals(firstNode)).findFirst();
+        Optional<Edge<E, V>> edgeStartedOnFirst = this.edges.get(firstNode.getValue()).stream().filter(e -> e.end.equals(secondNode)).findFirst();
+        Optional<Edge<E, V>> edgeStartedOnSecond = this.edges.get(secondNode.getValue()).stream().filter(e -> e.end.equals(firstNode)).findFirst();
 
         if (edgeStartedOnFirst.isPresent()) {
             return edgeStartedOnFirst;
@@ -70,6 +86,11 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
     }
 
     @Override
+    public Set<V> getNodeValues() {
+        return nodes.stream().map(Node::getValue).collect(Collectors.toSet());
+    }
+
+    @Override
     public AdjacentMatrix<E, V> adjacentMatrix(E equalityValue,
                                                E infinityValue,
                                                BinaryOperator<E> sumOperator) {
@@ -82,19 +103,52 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
         return adjacentMatrix.floydWarshall();
     }
 
-    private Set<Edge<E, V>> edgesWithNode(Node<V> node) {
-        Set<Edge<E, V>> edges = new HashSet<>();
-        edges.addAll(edgesEndingOnNode(node));
-        edges.addAll(edgesEndingOnNode(node));
-        return edges;
-    }
-
     private Set<Edge<E, V>> edgesStartingOnNode(Node<V> node) {
-        return edges.stream().filter(edge -> edge.start.equals(node)).collect(Collectors.toSet());
+        return edges.get(node.getValue());
     }
 
-    private Set<Edge<E, V>> edgesEndingOnNode(Node<V> node) {
-        return edges.stream().filter(edge -> edge.end.equals(node)).collect(Collectors.toSet());
+    @Override
+    public Set<Set<V>> getConnectedComponents() {
+        //TODO: might be different for oriented and non-oriented graphs
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Set<V> breadthFirstSearch(V initialNodeValue) {
+        Set<V> visitedNodes = new HashSet<>(nodes.size());
+        Queue<V> queue = new ArrayDeque<>(nodes.size());
+
+        visitedNodes.add(initialNodeValue);
+        queue.add(initialNodeValue);
+        while (!queue.isEmpty()) {
+            V nextNode = queue.poll();
+            Set<V> notYetVisitedNodes = edgesStartingOnNode(Node.of(nextNode)).stream().map(e -> e.end.getValue())
+                    .filter(node -> !visitedNodes.contains(node))
+                    .collect(Collectors.toSet());
+            visitedNodes.addAll(notYetVisitedNodes);
+            queue.addAll(notYetVisitedNodes);
+        }
+
+        return visitedNodes;
+    }
+
+    @Override
+    public Set<V> depthFirstSearch(V initialNodeValue) {
+        Set<V> visitedNodes = new HashSet<>(nodes.size());
+        Deque<V> stack = new ArrayDeque<>(nodes.size());
+
+        stack.push(initialNodeValue);
+        visitedNodes.add(initialNodeValue);
+        while (!stack.isEmpty()) {
+            V nextNode = stack.pop();
+            Set<V> notYetVisitedNodes = edgesStartingOnNode(Node.of(nextNode)).stream().map(e -> e.end.getValue())
+                    .filter(node -> !visitedNodes.contains(node))
+                    .collect(Collectors.toSet());
+            visitedNodes.addAll(notYetVisitedNodes);
+            notYetVisitedNodes.forEach(stack::push);
+        }
+
+        return visitedNodes;
     }
 
     static class AdjacentMatrix<E extends Comparable<E>, V> {
@@ -234,6 +288,10 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
                     ", value=" + value +
                     '}';
         }
+
+        public Edge<E, V> reversed() {
+            return new Edge<>(end, start, value);
+        }
     }
 
     static class Node<V> {
@@ -245,6 +303,10 @@ public class GraphImpl<E extends Comparable<E>, V> implements Graph<E, V> {
 
         public V getValue() {
             return value;
+        }
+
+        public static <V> Node<V> of(V value) {
+            return new Node<>(value);
         }
 
         @Override

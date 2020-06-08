@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class GraphReader {
 
     /**
-     * Reads from resource and returns positive weighted non-oriented graph, i.e. each edge has weight of 1
+     * Reads from resource and returns positive weighted non-oriented graph in a maze-format, i.e. each edge has weight of 1
      * @param resourceName
      * @return
      */
@@ -26,17 +26,30 @@ public class GraphReader {
 
             while (scanner.hasNextLine()) {
                 String rowAsString = scanner.nextLine();
-                System.out.println(rowAsString);
                 board.addRow(rowAsString);
             }
 
             board.buildNodes();
-            //System.out.println(board);
-            //System.out.println(board.nodes);
             Graph<Integer, Integer> graph = new GraphImpl<>(board.getNodeValues());
 
             for (Edge<Integer, Integer> edge: board.getEdges()) {
                 graph.addEdge(edge);
+            }
+
+            return graph;
+        }
+    }
+
+    public Graph<Integer, Integer> readNonWeightedEdgeListFromResource(final String resourceName) throws FileNotFoundException, URISyntaxException {
+        try(Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(
+                new File(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(resourceName)).toURI()))
+        ))) {
+
+            Graph<Integer, Integer> graph = new GraphImpl<>();
+
+            while (scanner.hasNextLine()) {
+                String[] edgeAsString = scanner.nextLine().split(" ");
+                graph.addEdge(Edge.of(Integer.parseInt(edgeAsString[0]), Integer.parseInt(edgeAsString[1]), 1));
             }
 
             return graph;
