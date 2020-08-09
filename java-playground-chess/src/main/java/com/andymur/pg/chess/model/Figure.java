@@ -2,19 +2,15 @@ package com.andymur.pg.chess.model;
 
 public class Figure {
 
-    private  final FigureType type;
-    private final Side side;
-    private final Coordinate position;
+    private final FigureType type;
+    private final Color color;
+    private final Cell position;
 
     public Figure(FigureType type,
-                  Side side,
-                  Coordinate position) {
+                  Color color,
+                  Cell position) {
         this.type = type;
-        this.side = side;
+        this.color = color;
         this.position = position;
-    }
-
-    enum Side {
-        WHITE, BLACK
     }
 }
