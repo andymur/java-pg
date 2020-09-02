@@ -1,28 +1,69 @@
 package com.andymur.pg.java.nio;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NioRunner {
-	public static void main(String[] args) throws IOException {
-		final Path filePath = FileSystems.getDefault().getPath("/home/amurashko/hello.txt");
-		final ByteChannel channel = Files.newByteChannel(filePath, StandardOpenOption.READ);
-		ByteBuffer byteBuffer = ByteBuffer.allocate(100);
-		int read = channel.read(byteBuffer);
-		byteBuffer.flip();
-		while (read != -1) {
-			while (byteBuffer.hasRemaining()) {
-				System.out.println((char) byteBuffer.get());
+
+	private static final int BUF_SIZE = 100;
+
+	public static void main(String[] args) {
+		writeFile("/tmp/hello.txt", generateContent("hello"));
+	}
+
+	static void writeFile(final String fileName, String content) {
+		Path filePath = FileSystems.getDefault().getPath(fileName);
+		try (final ByteChannel channel = Files.newByteChannel(filePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
+			final byte[] contentBytes = content.getBytes();
+			ByteBuffer byteBuffer = ByteBuffer.allocate(BUF_SIZE);
+			int ind = 0;
+			while (ind < contentBytes.length) {
+				if (ind + BUF_SIZE > contentBytes.length) {
+					byteBuffer.put(contentBytes, ind, contentBytes.length - ind);
+				} else {
+					byteBuffer.put(contentBytes, ind, BUF_SIZE);
+				}
+				ind += BUF_SIZE;
+				byteBuffer.flip();
+				channel.write(byteBuffer);
+				byteBuffer.clear();
 			}
-			byteBuffer.clear();
-			read = channel.read(byteBuffer);
-			byteBuffer.flip();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		channel.close();
+	}
+
+	static String generateContent(final String word) {
+		List<String> words = new ArrayList<>(50);
+		for (int i = 0; i < 50; i++) {
+			words.add(word);
+		}
+		return words.stream().collect(Collectors.joining(" "));
+	}
+
+	static void readFile(final String fileName) {
+		final Path filePath = FileSystems.getDefault().getPath(fileName);
+		try (final ByteChannel channel = Files.newByteChannel(filePath, StandardOpenOption.READ)) {
+			ByteBuffer byteBuffer = ByteBuffer.allocate(BUF_SIZE);
+			int read = channel.read(byteBuffer);
+			byteBuffer.flip();
+			while (read != -1) {
+				while (byteBuffer.hasRemaining()) {
+					System.out.println((char) byteBuffer.get());
+				}
+				byteBuffer.clear();
+				read = channel.read(byteBuffer);
+				byteBuffer.flip();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
