@@ -16,6 +16,7 @@ public class NioRunner {
 
 	public static void main(String[] args) {
 		writeFile("/tmp/hello.txt", generateContent("hello"));
+		System.out.println(readFile("/tmp/hello.txt"));
 	}
 
 	static void writeFile(final String fileName, String content) {
@@ -48,7 +49,8 @@ public class NioRunner {
 		return words.stream().collect(Collectors.joining(" "));
 	}
 
-	static void readFile(final String fileName) {
+	static String readFile(final String fileName) {
+		StringBuilder content = new StringBuilder();
 		final Path filePath = FileSystems.getDefault().getPath(fileName);
 		try (final ByteChannel channel = Files.newByteChannel(filePath, StandardOpenOption.READ)) {
 			ByteBuffer byteBuffer = ByteBuffer.allocate(BUF_SIZE);
@@ -56,7 +58,7 @@ public class NioRunner {
 			byteBuffer.flip();
 			while (read != -1) {
 				while (byteBuffer.hasRemaining()) {
-					System.out.println((char) byteBuffer.get());
+					content.append((char) byteBuffer.get());
 				}
 				byteBuffer.clear();
 				read = channel.read(byteBuffer);
@@ -65,5 +67,6 @@ public class NioRunner {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return content.toString();
 	}
 }
