@@ -2,6 +2,7 @@ package com.andymur.pg.java.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -20,10 +21,17 @@ public class SocketServer {
 	}
 
 	public void run() throws IOException, InterruptedException {
-		while (true) {
-			System.out.println("Accepting...");
-			final SocketChannel accept = serverSocketChannel.accept();
-			System.out.println(accept);
+		try {
+			while (true) {
+				System.out.println("Accepting...");
+				final SocketChannel accept = serverSocketChannel.accept();
+				ByteBuffer buffer = ByteBuffer.allocate(100);
+				buffer.put("Hey hey hey".getBytes());
+				buffer.flip();
+				accept.write(buffer);
+			}
+		} finally {
+			serverSocketChannel.close();
 		}
 	}
 }
