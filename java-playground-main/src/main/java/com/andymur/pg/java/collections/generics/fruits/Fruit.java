@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics.fruits;
+package com.andymur.pg.java.collections.generics.fruits;
 
 /**
  * Created by muraand.
@@ -17,10 +17,9 @@ public class Fruit {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Fruit{");
-        sb.append("type='").append(type).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Fruit{" + "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+        return sb;
     }
 }

@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics;
+package com.andymur.pg.java.collections.generics;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class ABCRunner {
 		//Map<String, Integer> cityToPopulation = citySet.stream().collect(Collectors.toMap(City::getName, City::getPopulation));
 
 		Map<String, Integer> cityToPopulation = citySet.stream().map(City::getName)
-				.collect(Collectors.toMap(Function.identity(), k -> k.length()));
+				.collect(Collectors.toMap(Function.identity(), String::length));
 
 		System.out.println(cityToPopulation);
 		System.out.println(cityToPopulation.values());
@@ -42,7 +42,6 @@ public class ABCRunner {
 
 		try {
 			System.out.println("T");
-			return;
 		} finally {
 			System.out.println("F");
 		}

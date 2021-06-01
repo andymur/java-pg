@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics;
+package com.andymur.pg.java.collections.generics;
 
 /**
  * Created by muraand.

@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics.fruits;
+package com.andymur.pg.java.collections.generics.fruits;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,6 @@ public class FruitBox<T extends Fruit> {
     List<T> fruits;
 
     public FruitBox() {
-        this.fruits = new ArrayList<T>();
+        this.fruits = new ArrayList<>();
     }
 }

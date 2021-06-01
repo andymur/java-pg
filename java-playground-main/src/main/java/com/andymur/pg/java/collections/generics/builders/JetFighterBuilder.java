@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics.builders;
+package com.andymur.pg.java.collections.generics.builders;
 
 public class JetFighterBuilder extends AircraftBuilder<JetFighterBuilder> {
 	public int racketsNumber;

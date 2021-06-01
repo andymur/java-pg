@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics.builders;
+package com.andymur.pg.java.collections.generics.builders;
 
 public abstract class BaseBuilder<T extends BaseBuilder<T>> {
 	protected String id;

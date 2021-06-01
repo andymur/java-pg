@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics.builders;
+package com.andymur.pg.java.collections.generics.builders;
 
 public class TruckBuilder extends VehicleBuilder<TruckBuilder> {
 	private int tonnage;

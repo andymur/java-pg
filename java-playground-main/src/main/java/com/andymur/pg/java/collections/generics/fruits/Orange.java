@@ -1,4 +1,4 @@
-package com.andymur.pg.java.generics.fruits;
+package com.andymur.pg.java.collections.generics.fruits;
 
 /**
  * Created by muraand.
