@@ -9,10 +9,16 @@ import org.influxdb.dto.Pong;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /*
-    set it up with Docker ```docker run -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb:1.8```
+    set it up with Docker
+
+    ```docker run -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb:1.8```
+    ```docker run -d --name=grafana -p 3000:3000 grafana/grafana```
+
  */
 public class InfluxClientRunner {
 
@@ -30,6 +36,11 @@ public class InfluxClientRunner {
     private static List<String> HOSTS = Arrays.asList("localhost", "192.168.1.1", "192.168.1.2", "192.168.1.3");
 
     public static void main(String[] args) throws InterruptedException {
+        final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(InfluxClientRunner::mainFlow);
+    }
+
+    static void mainFlow() {
         try (InfluxDB influxDB = InfluxDBFactory.connect(String.format("http://%s:%s", HOST, PORT))) {
 
             Pong pong = influxDB.ping();
@@ -37,15 +48,15 @@ public class InfluxClientRunner {
             if (pong.isGood()) {
                 // will be removed
                 influxDB.createDatabase(DB_NAME);
-                influxDB.enableBatch();
-                BatchPoints batchPoints = BatchPoints.database(DB_NAME).build();
-
-                for (int i = 0; i < 50; i++) {
-                    batchPoints.point(createRandomPoint());
-                    Thread.sleep(TimeUnit.MILLISECONDS.toMillis(100));
+                influxDB.enableBatch(1000, 100, TimeUnit.MILLISECONDS);
+                for (int i = 0; i < 1_000_000; i++) {
+                    influxDB.write(DB_NAME, "autogen", createRandomPoint());
+                    try {
+                        Thread.sleep(TimeUnit.MILLISECONDS.toMillis(300));
+                    } catch (InterruptedException e) {
+                        return;
+                    }
                 }
-
-                influxDB.write(batchPoints);
             }
         }
     }
