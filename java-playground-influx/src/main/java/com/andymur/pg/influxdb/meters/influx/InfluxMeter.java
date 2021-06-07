@@ -8,4 +8,5 @@ public interface InfluxMeter<T> {
     Map<String, String> getTags();
     void process(T updateValue);
     void reset();
+    boolean hasUpdates();
 }

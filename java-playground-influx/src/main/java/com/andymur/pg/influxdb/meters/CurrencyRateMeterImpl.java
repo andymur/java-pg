@@ -36,4 +36,9 @@ public class CurrencyRateMeterImpl implements Meter<PriceUpdate, Long> {
     private void count() {
         value.incrementAndGet();
     }
+
+    @Override
+    public boolean hasUpdates() {
+        return value.get() > 0L;
+    }
 }

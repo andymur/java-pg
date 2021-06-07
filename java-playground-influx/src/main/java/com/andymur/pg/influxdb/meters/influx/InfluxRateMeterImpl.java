@@ -33,4 +33,9 @@ public class InfluxRateMeterImpl extends InfluxMeterImpl<PriceUpdate> implements
     public void reset() {
         meter.reset();
     }
+
+    @Override
+    public boolean hasUpdates() {
+        return meter.hasUpdates();
+    }
 }

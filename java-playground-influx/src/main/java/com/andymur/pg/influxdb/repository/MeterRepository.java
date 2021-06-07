@@ -20,13 +20,14 @@ public class MeterRepository {
     }
 
     public List<Point> getValues() {
-        //TODO: check for emptiness
         List<Point> result = new ArrayList<>();
         for (InfluxMeter<PriceUpdate> meter: meters) {
-            if (meter instanceof SinglePointSupplier) {
-                result.add(((SinglePointSupplier) meter).getPoint());
-            } else if (meter instanceof MultiPointSupplier) {
-                result.addAll(((MultiPointSupplier) meter).getPoints());
+            if (meter.hasUpdates()) {
+                if (meter instanceof SinglePointSupplier) {
+                    result.add(((SinglePointSupplier) meter).getPoint());
+                } else if (meter instanceof MultiPointSupplier) {
+                    result.addAll(((MultiPointSupplier) meter).getPoints());
+                }
             }
         }
         return result;

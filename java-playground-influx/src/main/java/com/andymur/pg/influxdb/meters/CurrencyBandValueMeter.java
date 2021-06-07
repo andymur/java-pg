@@ -44,4 +44,9 @@ public class CurrencyBandValueMeter implements Meter<PriceUpdate, BandValue> {
         midValueAccum += updateValue.getBandValue().getMidValue();
 
     }
+
+    @Override
+    public boolean hasUpdates() {
+        return processedUpdates > 0;
+    }
 }

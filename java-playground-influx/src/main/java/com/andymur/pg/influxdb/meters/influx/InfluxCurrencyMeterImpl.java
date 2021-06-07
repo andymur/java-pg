@@ -29,7 +29,7 @@ public class InfluxCurrencyMeterImpl extends InfluxMeterImpl<PriceUpdate> implem
 
     @Override
     public List<Point> getPoints() {
-        return meters.stream().map(this::getPoint).collect(Collectors.toList());
+        return meters.stream().filter(Meter::hasUpdates).map(this::getPoint).collect(Collectors.toList());
     }
 
     private Point getPoint(Meter<PriceUpdate, BandValue> meter) {
@@ -49,5 +49,10 @@ public class InfluxCurrencyMeterImpl extends InfluxMeterImpl<PriceUpdate> implem
     @Override
     public void reset() {
         meters.forEach(Meter::reset);
+    }
+
+    @Override
+    public boolean hasUpdates() {
+        return meters.stream().anyMatch(Meter::hasUpdates);
     }
 }
