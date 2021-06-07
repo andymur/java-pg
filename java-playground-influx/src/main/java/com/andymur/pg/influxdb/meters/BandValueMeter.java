@@ -3,18 +3,18 @@ package com.andymur.pg.influxdb.meters;
 import com.andymur.pg.influxdb.model.BandValue;
 import com.andymur.pg.influxdb.model.PriceUpdate;
 
-public class CurrencyBandValueMeter implements Meter<PriceUpdate, BandValue> {
+public class BandValueMeter implements Meter<PriceUpdate, BandValue> {
 
     private long midValueAccum;
     private long spreadValueAccum;
     private int processedUpdates;
 
-    private final String currency;
+    private final String currencyCouple;
     private final int bandAmount;
 
-    public CurrencyBandValueMeter(final String currency,
-                                  final int bandAmount) {
-        this.currency = currency;
+    public BandValueMeter(final String currencyCouple,
+                          final int bandAmount) {
+        this.currencyCouple = currencyCouple;
         this.bandAmount = bandAmount;
     }
 
@@ -34,7 +34,7 @@ public class CurrencyBandValueMeter implements Meter<PriceUpdate, BandValue> {
 
     @Override
     public void process(PriceUpdate updateValue) {
-        if (updateValue.getCurrencyCouple().equals(currency)
+        if (updateValue.getCurrencyCouple().equals(currencyCouple)
                 && updateValue.getBandValue().getAmount() == bandAmount) {
             internalProcess(updateValue);
         }

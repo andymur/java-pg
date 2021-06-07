@@ -4,7 +4,7 @@ import com.andymur.pg.influxdb.meters.RateMeterImpl;
 import com.andymur.pg.influxdb.meters.influx.InfluxRateMeterImpl;
 import com.andymur.pg.influxdb.model.PriceUpdate;
 import com.andymur.pg.influxdb.repository.InfluxRepository;
-import com.andymur.pg.influxdb.repository.MeterRepository;
+import com.andymur.pg.influxdb.repository.MetersRepository;
 import com.andymur.pg.influxdb.workers.MeterWorker;
 import com.andymur.pg.influxdb.workers.UpdatesConsumer;
 import com.andymur.pg.influxdb.workers.UpdatesSupplier;
@@ -14,13 +14,14 @@ import org.influxdb.dto.Pong;
 
 import java.util.concurrent.*;
 
+import static com.andymur.pg.influxdb.repository.MetersRepository.UPDATE_RATES_MEASUREMENT_NAME;
+
 public class MeterSystemRunner {
 
     private static String HOST = "localhost";
     private static String PORT = "8086";
 
     private static final String DB_NAME = "test_measurements";
-    private static final String MEASUREMENT_NAME = "rate-measurement";
     private static final String RETENTION_POLICY = "autogen";
 
     public static void main(String[] args) {
@@ -30,9 +31,9 @@ public class MeterSystemRunner {
 
         final UpdatesSupplier updatesSupplier = new UpdatesSupplier(updateGenerator, updatesQ);
 
-        final MeterRepository metersRepository = new MeterRepository();
-        metersRepository.addMeter(new InfluxRateMeterImpl(MEASUREMENT_NAME, new RateMeterImpl(),
-                MeterRepository.defaultTagSet()));
+        final MetersRepository metersRepository = new MetersRepository();
+        metersRepository.addMeter(new InfluxRateMeterImpl(UPDATE_RATES_MEASUREMENT_NAME, new RateMeterImpl(),
+                MetersRepository.defaultTagSet()));
 
         final UpdatesConsumer updatesConsumer = new UpdatesConsumer(updatesQ, metersRepository);
 

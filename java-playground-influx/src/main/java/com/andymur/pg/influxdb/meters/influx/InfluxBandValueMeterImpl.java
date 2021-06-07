@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class InfluxCurrencyMeterImpl extends InfluxMeterImpl<PriceUpdate> implements MultiPointSupplier {
+public class InfluxBandValueMeterImpl extends InfluxMeterImpl<PriceUpdate> implements MultiPointSupplier {
 
     private final static String MID_PRICE_VALUE_FIELD_NAME = "midPriceValue";
     private final static String SPREAD_VALUE_FIELD_NAME = "spreadValue";
 
     private final List<Meter<PriceUpdate, BandValue>> meters;
 
-    public InfluxCurrencyMeterImpl(final String measurement,
-        final Map<String, String> tagSet) {
+    public InfluxBandValueMeterImpl(final String measurement,
+                                    final Map<String, String> tagSet) {
         super(measurement, tagSet);
         meters = new ArrayList<>();
     }
 
-    public void addCurrencyMeter(final Meter<PriceUpdate, BandValue> meter) {
+    public void addBandValueMeter(final Meter<PriceUpdate, BandValue> meter) {
         this.meters.add(meter);
     }
 
@@ -35,6 +35,7 @@ public class InfluxCurrencyMeterImpl extends InfluxMeterImpl<PriceUpdate> implem
     private Point getPoint(Meter<PriceUpdate, BandValue> meter) {
         final BandValue value = meter.getValue();
         Point.Builder measurementBuilder = prepareBuilder();
+        measurementBuilder.tag("bandSize", String.valueOf(value.getAmount()));
         return measurementBuilder
                 .addField(MID_PRICE_VALUE_FIELD_NAME, value.getMidValue())
                 .addField(SPREAD_VALUE_FIELD_NAME, value.getSpreadValue())

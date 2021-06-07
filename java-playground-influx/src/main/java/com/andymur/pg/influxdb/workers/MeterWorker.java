@@ -1,16 +1,16 @@
 package com.andymur.pg.influxdb.workers;
 
 import com.andymur.pg.influxdb.repository.InfluxRepository;
-import com.andymur.pg.influxdb.repository.MeterRepository;
+import com.andymur.pg.influxdb.repository.MetersRepository;
 import org.influxdb.dto.Point;
 
 public class MeterWorker implements Runnable {
 
-    private final MeterRepository metersRepository;
+    private final MetersRepository metersRepository;
     private final InfluxRepository influxRepository;
 
 
-    public MeterWorker(final MeterRepository metersRepository,
+    public MeterWorker(final MetersRepository metersRepository,
                 final InfluxRepository influxRepository) {
         this.metersRepository = metersRepository;
         this.influxRepository = influxRepository;

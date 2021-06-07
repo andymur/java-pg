@@ -4,12 +4,12 @@ import com.andymur.pg.influxdb.model.PriceUpdate;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class CurrencyRateMeterImpl implements Meter<PriceUpdate, Long> {
+public class CurrencyCoupleRateMeterImpl implements Meter<PriceUpdate, Long> {
 
     private final String currencyCouple;
     private AtomicLong value = new AtomicLong();
 
-    public CurrencyRateMeterImpl(String currencyCouple) {
+    public CurrencyCoupleRateMeterImpl(String currencyCouple) {
         this.currencyCouple = currencyCouple;
     }
 
