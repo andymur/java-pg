@@ -10,10 +10,14 @@ public class PriceUpdateGenerator {
 
     private static final Random SOURCE_OF_RANDOMNESS = new Random(System.currentTimeMillis());
 
-    private static List<String> CURRENCY_COUPLES_CACHE = Arrays.asList("EURUSD", "EURRUB", "USDRUB", "EURGBP");
+    private static List<String> CURRENCY_COUPLES_CACHE = Arrays.asList(
+            "EURUSD", "EURRUB", "USDRUB", "EURGBP", "GBPUSD", "EURJPY", "EURCHF", "USDCHF", "EURCAD", "EURNOK"
+    );
+
+    private static List<Integer> BAND_AMOUNTS = Arrays.asList(500_000, 1000_000, 5000_000);
 
     public PriceUpdate generate() {
-        return new PriceUpdate(randomFromList(CURRENCY_COUPLES_CACHE), randomLong(10000, 110000), randomLong(100, 300));
+        return new PriceUpdate(randomFromList(CURRENCY_COUPLES_CACHE), randomLong(10000, 110000), randomLong(100, 300), randomFromList(BAND_AMOUNTS));
     }
 
     static <E> E randomFromList(List<E> elements) {
