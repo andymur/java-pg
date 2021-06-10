@@ -3,7 +3,7 @@ package com.andymur.pg.influxdb;
 import com.andymur.pg.influxdb.meters.RateMeterImpl;
 import com.andymur.pg.influxdb.meters.influx.InfluxRateMeterImpl;
 import com.andymur.pg.influxdb.model.PriceUpdate;
-import com.andymur.pg.influxdb.repository.InfluxRepository;
+import com.andymur.pg.influxdb.repository.InfluxRepositoryImpl;
 import com.andymur.pg.influxdb.repository.MetersRepository;
 import com.andymur.pg.influxdb.workers.MeterWorker;
 import com.andymur.pg.influxdb.workers.UpdatesConsumer;
@@ -37,7 +37,7 @@ public class MeterSystemRunner {
 
         final UpdatesConsumer updatesConsumer = new UpdatesConsumer(updatesQ, metersRepository);
 
-        final InfluxRepository influxRepository = new InfluxRepository(DB_NAME, RETENTION_POLICY,
+        final InfluxRepositoryImpl influxRepository = new InfluxRepositoryImpl(DB_NAME, RETENTION_POLICY,
                 getInfluxInstance(HOST, PORT));
 
         final MeterWorker meterWorker = new MeterWorker(metersRepository, influxRepository);

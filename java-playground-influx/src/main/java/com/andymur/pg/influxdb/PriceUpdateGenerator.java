@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class PriceUpdateGenerator {
+public class PriceUpdateGenerator implements Generator<PriceUpdate> {
 
     private static final Random SOURCE_OF_RANDOMNESS = new Random(System.currentTimeMillis());
 
@@ -16,6 +16,7 @@ public class PriceUpdateGenerator {
 
     private static List<Integer> BAND_AMOUNTS = Arrays.asList(500_000, 1000_000, 5000_000);
 
+    @Override
     public PriceUpdate generate() {
         return new PriceUpdate(randomFromList(CURRENCY_COUPLES_CACHE), randomLong(10000, 110000), randomLong(100, 300), randomFromList(BAND_AMOUNTS));
     }

@@ -25,8 +25,10 @@ public class MetersRepository {
     private final Set<InfluxMeter<PriceUpdate>> meters = new HashSet<>();
 
     public void processUpdate(PriceUpdate priceUpdate) {
-        if (!currencyCouplesInProcess.contains(priceUpdate.getCurrencyCouple())) {
-            addCurrencyCoupleRelatedMeters(priceUpdate.getCurrencyCouple());
+        final String currencyCouple = priceUpdate.getCurrencyCouple();
+        if (!currencyCouplesInProcess.contains(currencyCouple)) {
+            addCurrencyCoupleRelatedMeters(currencyCouple);
+            currencyCouplesInProcess.add(currencyCouple);
         }
         meters.forEach(meter -> meter.process(priceUpdate));
     }
