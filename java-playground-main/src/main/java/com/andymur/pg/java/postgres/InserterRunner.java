@@ -73,7 +73,6 @@ public class InserterRunner {
         final PreparedStatement preparedStatement = connection.prepareStatement(INSERT_STATEMENT);
         preparedStatement.setLong(1, id);
         preparedStatement.setString(2, name);
-        preparedStatement.addBatch();
         preparedStatement.execute();
     }
 
