@@ -14,7 +14,7 @@
         <junit.version>4.11</junit.version>
         <guava.version>18.0</guava.version>
         <spring.version>4.3.18.RELEASE</spring.version>
-        <snakeyaml.version>1.21</snakeyaml.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
         <postgresql.version>42.2.21</postgresql.version>
     </properties>
 
