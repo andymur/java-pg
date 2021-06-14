@@ -24,7 +24,7 @@ public class InserterRunner {
     //);
     private static final String INSERT_STATEMENT = "INSERT INTO MEASUREMENTS(ID, DEVICE) VALUES (?, ?)";
 
-    private static final AtomicLong COUNTER = new AtomicLong();
+    private static Long COUNTER = 0L;
 
     private static final long WORKING_TIME_IN_MINUTES = TimeUnit.SECONDS.toMillis(60);
 
@@ -45,11 +45,12 @@ public class InserterRunner {
         while (System.currentTimeMillis() - started < WORKING_TIME_IN_MINUTES) {
             makeInsert(preparedStatement, idCounter++, name);
             //makeInsertSlowly(connection, idCounter++, name);
-            COUNTER.incrementAndGet();
+            COUNTER += 1;
             final long now = System.currentTimeMillis();
             if (now - secondThreshold > TimeUnit.SECONDS.toMillis(1L)) {
                 secondThreshold = now;
-                MEASUREMENTS.add(COUNTER.getAndSet(0L));
+                MEASUREMENTS.add(COUNTER);
+                COUNTER = 0L;
             }
         }
 
