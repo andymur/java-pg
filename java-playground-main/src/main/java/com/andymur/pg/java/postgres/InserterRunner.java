@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class InserterRunner {
 
@@ -26,7 +25,7 @@ public class InserterRunner {
 
     private static Long COUNTER = 0L;
 
-    private static final long WORKING_TIME_IN_MINUTES = TimeUnit.SECONDS.toMillis(60);
+    private static final long WORKING_TIME_IN_SECONDS = TimeUnit.SECONDS.toMillis(60);
 
     private static final long BATCH_SIZE = 10000L;
 
@@ -42,7 +41,7 @@ public class InserterRunner {
         long idCounter = 0L;
         final String name = "device123";
 
-        while (System.currentTimeMillis() - started < WORKING_TIME_IN_MINUTES) {
+        while (System.currentTimeMillis() - started < WORKING_TIME_IN_SECONDS) {
             makeInsert(preparedStatement, idCounter++, name);
             //makeInsertSlowly(connection, idCounter++, name);
             COUNTER += 1;
