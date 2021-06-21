@@ -73,8 +73,8 @@ public class MetersRepository {
 
     public static Map<String, String> defaultTagSet() {
         Map<String, String> result = new HashMap<>();
-        result.put("host", "localhost");
-        result.put("instance", "edf-monitoring1");
+        result.put("monitor_host", "localhost");
+        result.put("application_instance", "edf-monitoring1");
         result.put("application", "engine");
 
         return result;
@@ -82,10 +82,10 @@ public class MetersRepository {
 
     public static Map<String, String> defaultTagSetWithCurrencyCouple(final String currencyCouple) {
         Map<String, String> result = new HashMap<>();
-        result.put("host", "localhost");
-        result.put("instance", "edf-monitoring1");
+        result.put("monitor_host", "localhost");
+        result.put("application_instance", "edf-monitoring1");
         result.put("application", "engine");
-        result.put("currencyCouple", currencyCouple);
+        result.put("currency_couple", currencyCouple);
 
         return result;
     }

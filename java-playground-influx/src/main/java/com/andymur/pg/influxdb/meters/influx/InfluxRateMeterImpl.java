@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class InfluxRateMeterImpl extends InfluxMeterImpl<PriceUpdate> implements SinglePointSupplier {
 
-    private final static String RATE_FIELD_NAME = "rateValue";
+    private final static String RATE_FIELD_NAME = "rate";
     private final Meter<PriceUpdate, Long> meter;
 
     public InfluxRateMeterImpl(final String measurement,

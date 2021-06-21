@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 public class InfluxBandValueMeterImpl extends InfluxMeterImpl<PriceUpdate> implements MultiPointSupplier {
 
-    private final static String MID_PRICE_VALUE_FIELD_NAME = "midPriceValue";
-    private final static String SPREAD_VALUE_FIELD_NAME = "spreadValue";
+    private final static String MID_PRICE_VALUE_FIELD_NAME = "mid_price";
+    private final static String SPREAD_VALUE_FIELD_NAME = "spread";
 
     private final List<Meter<PriceUpdate, BandValue>> meters;
 
