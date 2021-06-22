@@ -10,15 +10,16 @@ import java.util.*;
 
 /**
  * query examples:
- * select spreadValue from "band-values" where bandSize = '1000000'
- * select currencyCouple, bandSize, midPriceValue from "band-values" where currencyCouple = 'EURUSD' and bandSize = '5000000'
+ * select spread from "band-values" where band_size = '1000000'
+ * select currency_couple, band_size, mid_price from "band-values" where currency_couple = 'EURUSD' and band_size = '5000000'
+ * select * from "rate-measurements" where time > now() - 1m
  *
  * select currencyCouple, rateValue from "rate-measurement" where currencyCouple = 'EURUSD'
  */
 
 public class MetersRepository {
 
-    public static final String UPDATE_RATES_MEASUREMENT_NAME = "rate-measurement";
+    public static final String UPDATE_RATES_MEASUREMENT_NAME = "rate-measurements";
     public static final String BAND_VALUES_MEASUREMENT_NAME = "band-values";
     private final Set<String> currencyCouplesInProcess = new HashSet<>();
 

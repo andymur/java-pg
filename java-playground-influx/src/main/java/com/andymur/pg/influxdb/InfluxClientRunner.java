@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
     set it up with Docker
 
     ```docker run -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb:1.8```
-    ```docker run -d --name=grafana -p 3000:3000 grafana/grafana```
+    ```docker run -d -p 3000:3000 grafana/grafana```
 
  */
 public class InfluxClientRunner {
@@ -35,7 +35,7 @@ public class InfluxClientRunner {
 
     private static List<String> HOSTS = Arrays.asList("localhost", "192.168.1.1", "192.168.1.2", "192.168.1.3");
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         final ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(InfluxClientRunner::mainFlow);
     }
@@ -49,7 +49,7 @@ public class InfluxClientRunner {
                 // will be removed
                 influxDB.createDatabase(DB_NAME);
                 influxDB.enableBatch(1000, 100, TimeUnit.MILLISECONDS);
-                for (int i = 0; i < 1_000_000; i++) {
+                for (int i = 0; i < 10_000_000; i++) {
                     influxDB.write(DB_NAME, "autogen", createRandomPoint());
                     try {
                         Thread.sleep(TimeUnit.MILLISECONDS.toMillis(300));

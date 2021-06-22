@@ -3,6 +3,7 @@ package com.andymur.pg.influxdb;
 import com.andymur.pg.influxdb.meters.RateMeterImpl;
 import com.andymur.pg.influxdb.meters.influx.InfluxRateMeterImpl;
 import com.andymur.pg.influxdb.model.PriceUpdate;
+import com.andymur.pg.influxdb.repository.Config;
 import com.andymur.pg.influxdb.repository.InfluxRepositoryImpl;
 import com.andymur.pg.influxdb.repository.MetersRepository;
 import com.andymur.pg.influxdb.workers.MeterWorker;
@@ -18,11 +19,12 @@ import static com.andymur.pg.influxdb.repository.MetersRepository.UPDATE_RATES_M
 
 public class MeterSystemRunner {
 
-    private static String HOST = "localhost";
-    private static String PORT = "8086";
-
     private static final String DB_NAME = "test_measurements";
     private static final String RETENTION_POLICY = "autogen";
+
+    private static final Config DIRECT_CONFIG = new Config("http://localhost:8086", DB_NAME, RETENTION_POLICY);
+
+    private static final Config TELEGRAF_CONFIG = new Config("http://localhost:8087", DB_NAME, RETENTION_POLICY);
 
     public static void main(String[] args) {
 
@@ -37,8 +39,9 @@ public class MeterSystemRunner {
 
         final UpdatesConsumer updatesConsumer = new UpdatesConsumer(updatesQ, metersRepository);
 
-        final InfluxRepositoryImpl influxRepository = new InfluxRepositoryImpl(DB_NAME, RETENTION_POLICY,
-                getInfluxInstance(HOST, PORT));
+        final InfluxRepositoryImpl influxRepository = new InfluxRepositoryImpl(
+                TELEGRAF_CONFIG
+        );
 
         final MeterWorker meterWorker = new MeterWorker(metersRepository, influxRepository);
 
