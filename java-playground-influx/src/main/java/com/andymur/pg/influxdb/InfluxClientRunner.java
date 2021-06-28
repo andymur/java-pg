@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
     ```docker run -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb:1.8```
     ```docker run -d -p 3000:3000 grafana/grafana```
+    ```./telegraf-1.19.0/usr/bin$ ./telegraf --config telegraf.conf```
 
  */
 public class InfluxClientRunner {
