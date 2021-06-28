@@ -40,7 +40,8 @@ public class MeterSystemRunner {
         final UpdatesConsumer updatesConsumer = new UpdatesConsumer(updatesQ, metersRepository);
 
         final InfluxRepositoryImpl influxRepository = new InfluxRepositoryImpl(
-                TELEGRAF_CONFIG
+                /* TELEGRAF_CONFIG */
+                DIRECT_CONFIG
         );
 
         final MeterWorker meterWorker = new MeterWorker(metersRepository, influxRepository);

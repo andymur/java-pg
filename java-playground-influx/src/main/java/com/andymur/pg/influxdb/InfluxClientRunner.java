@@ -49,7 +49,8 @@ public class InfluxClientRunner {
                 // will be removed
                 influxDB.createDatabase(DB_NAME);
                 influxDB.enableBatch(1000, 100, TimeUnit.MILLISECONDS);
-                for (int i = 0; i < 10_000_000; i++) {
+                long startedAt = System.currentTimeMillis();
+                while (System.currentTimeMillis() - startedAt < TimeUnit.HOURS.toMillis(2)) {
                     influxDB.write(DB_NAME, "autogen", createRandomPoint());
                     try {
                         Thread.sleep(TimeUnit.MILLISECONDS.toMillis(300));
