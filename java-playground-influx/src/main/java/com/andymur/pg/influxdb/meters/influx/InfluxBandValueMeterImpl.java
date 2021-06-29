@@ -35,7 +35,7 @@ public class InfluxBandValueMeterImpl extends InfluxMeterImpl<PriceUpdate> imple
     private Point getPoint(Meter<PriceUpdate, BandValue> meter) {
         final BandValue value = meter.getValue();
         Point.Builder measurementBuilder = prepareBuilder();
-        measurementBuilder.tag("bandSize", String.valueOf(value.getAmount()));
+        measurementBuilder.tag("band_size", String.valueOf(value.getAmount()));
         return measurementBuilder
                 .addField(MID_PRICE_VALUE_FIELD_NAME, value.getMidValue())
                 .addField(SPREAD_VALUE_FIELD_NAME, value.getSpreadValue())
