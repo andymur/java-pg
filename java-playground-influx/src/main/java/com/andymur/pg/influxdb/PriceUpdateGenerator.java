@@ -18,7 +18,10 @@ public class PriceUpdateGenerator implements Generator<PriceUpdate> {
 
     @Override
     public PriceUpdate generate() {
-        return new PriceUpdate(randomFromList(CURRENCY_COUPLES_CACHE), randomLong(10000, 110000), randomLong(100, 300), randomFromList(BAND_AMOUNTS));
+        return new PriceUpdate(randomFromList(CURRENCY_COUPLES_CACHE),
+                randomInt(10000, 110000),
+                randomInt(100, 300),
+                randomFromList(BAND_AMOUNTS));
     }
 
     static <E> E randomFromList(List<E> elements) {
@@ -26,11 +29,6 @@ public class PriceUpdateGenerator implements Generator<PriceUpdate> {
     }
 
     static int randomInt(int from, int to) {
-        return from + SOURCE_OF_RANDOMNESS.nextInt(to + 1);
-    }
-
-    static long randomLong(long from, long to) {
-        long val = from + SOURCE_OF_RANDOMNESS.nextLong();
-        return Math.min(val, to);
+        return from + SOURCE_OF_RANDOMNESS.nextInt(to - from + 1);
     }
 }

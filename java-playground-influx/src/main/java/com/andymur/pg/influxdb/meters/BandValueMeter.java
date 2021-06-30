@@ -29,7 +29,7 @@ public class BandValueMeter implements Meter<PriceUpdate, BandValue> {
     public synchronized void reset() {
         midValueAccum = 0L;
         spreadValueAccum = 0L;
-        processedUpdates += 1;
+        processedUpdates = 0;
     }
 
     @Override
@@ -42,7 +42,8 @@ public class BandValueMeter implements Meter<PriceUpdate, BandValue> {
 
     private synchronized void internalProcess(PriceUpdate updateValue) {
         midValueAccum += updateValue.getBandValue().getMidValue();
-
+        spreadValueAccum += updateValue.getBandValue().getSpreadValue();
+        processedUpdates += 1;
     }
 
     @Override
