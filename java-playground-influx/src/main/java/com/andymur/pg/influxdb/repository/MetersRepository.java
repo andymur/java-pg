@@ -15,6 +15,15 @@ import java.util.*;
  * select * from "rate-measurements" where time > now() - 1m
  *
  * select currencyCouple, rateValue from "rate-measurement" where currencyCouple = 'EURUSD'
+ *
+ * Grafana queries:
+ *
+ * average rate: select mean("rate") from "rate-measurements" WHERE $timeFilter group by time(2s)
+ * average rate for ccy couple: select mean("rate") from "rate-measurements" where currency_couple =~ /^$CcyCouple$/ AND $timeFilter group by time(2s)
+ * average mid price for band: select  mean(mid_price) from "band-values" where  band_size = '5000000' and $timeFilter group by time(2s)
+ * average mid price for band for ccy couple: select  mean(mid_price) from "band-values" where currency_couple =~ /^$CcyCouple$/ and  band_size = '5000000' and $timeFilter group by time(2s)
+ * average spread for band: select  mean(spread) from "band-values" where  band_size = '5000000' and $timeFilter group by time(2s)
+ * average spread for band for ccy couple: select  mean(spread) from "band-values" where currency_couple =~ /^$CcyCouple$/ and band_size = '5000000' and $timeFilter group by time(2s)
  */
 
 public class MetersRepository {
