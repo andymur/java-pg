@@ -29,6 +29,7 @@
         <module>java-playground-pocket</module>
         <module>java-playground-hashcode</module>
         <module>java-playground-chess</module>
+        <module>langs</module>
     </modules>
 
     <dependencyManagement>

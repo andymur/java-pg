@@ -1,0 +1,17 @@
+{
+  "essen": {
+    "present": "essen",
+    "past": "aß",
+    "perfect": "gegessen"
+  },
+  "haben": {
+    "present": "",
+    "past": "",
+    "perfect": ""
+  },
+  "verb": {
+    "present": "",
+    "past": "",
+    "perfect": ""
+  }
+}
