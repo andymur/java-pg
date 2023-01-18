@@ -1,5 +1,6 @@
 package com.andymur.langs.de.helper
 
+import com.andymur.langs.de.model.HelperVerb
 import com.andymur.langs.de.model.Verb
 import java.io.File
 
@@ -12,8 +13,15 @@ class CsvVerbReader {
                 reader.readLine()
             }
             return reader.lineSequence().map {
-                val (infinitive, past, perfect) = it.split(delimiter, limit = 3)
-                Verb(infinitive = infinitive, present = infinitive, past = past, perfect = perfect)
+                val (infinitive, present, past, perfect, helper) = it.split(delimiter, limit = 5)
+                Verb(
+                    infinitive = infinitive, present = present, past = past, perfect = perfect,
+                    helper = when (helper) {
+                        "haben" -> HelperVerb.HABEN
+                        "sein" -> HelperVerb.SEIN
+                        else -> HelperVerb.HABEN
+                    }
+                )
             }.toList()
         }
         return emptyList()
