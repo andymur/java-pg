@@ -12,13 +12,15 @@ fun main() {
 fun runIrregularVerbsTest() {
     val verbReader = CsvVerbReader()
     val verbs = verbReader.readFile(filename = "verbs.csv", hasHeader = false)
-    // add support for present
     // w/ or w/o helper verb: haben or sein
     val verbErrors: ArrayList<VerbError> = ArrayList()
 
-    prepareVerbList(verbs, 3, false).forEach {
+    prepareVerbList(verbs, 5, true).forEach {
         println(it.infinitive)
-        val (past, perfect) = readln().split(" ")
+        val (present, past, perfect) = readln().split(" ")
+        verbErrors.add(
+            compareVerbs(infinitive = it.infinitive, expectedVerb = it.present, present, VerbTense.PRESENT)
+        )
         verbErrors.add(
             compareVerbs(infinitive = it.infinitive, expectedVerb = it.past, past, VerbTense.PAST)
         )
