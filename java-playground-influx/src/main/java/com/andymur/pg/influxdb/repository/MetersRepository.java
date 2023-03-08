@@ -47,7 +47,7 @@ public class MetersRepository {
         meters.add(meter);
     }
 
-    private synchronized void addCurrencyCoupleRelatedMeters(final String currencyCouple) {
+    private void addCurrencyCoupleRelatedMeters(final String currencyCouple) {
         // rate meter for currency couple
         addMeter(new InfluxRateMeterImpl(UPDATE_RATES_MEASUREMENT_NAME, new CurrencyCoupleRateMeterImpl(currencyCouple),
                 defaultTagSetWithCurrencyCouple(currencyCouple)));
@@ -63,7 +63,7 @@ public class MetersRepository {
         addMeter(influxCurrencyCoupleMeter);
     }
 
-    public synchronized List<Point> getValues() {
+    public List<Point> getValues() {
         List<Point> result = new ArrayList<>();
         for (InfluxMeter<PriceUpdate> meter: meters) {
             if (meter.hasUpdates()) {
